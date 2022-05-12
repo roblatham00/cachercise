@@ -3,10 +3,10 @@ exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include
 
-Name: alpha-client
+Name: cachercize-admin
 Description: <insert description here>
-Version: @ALPHA_VERSION@
+Version: @CACHERCIZE_VERSION@
 
 Requires: margo
-Libs: -L${libdir} @CLIENT_PRIVATE_LIBS@
+Libs: -L${libdir} @ADMIN_PRIVATE_LIBS@
 Cflags: -I${includedir}

@@ -7,15 +7,15 @@
 #define _ADMIN_H
 
 #include "types.h"
-#include "alpha/alpha-admin.h"
+#include "cachercize/cachercize-admin.h"
 
-typedef struct alpha_admin {
+typedef struct cachercize_admin {
    margo_instance_id mid;
-   hg_id_t           create_resource_id;
-   hg_id_t           open_resource_id;
-   hg_id_t           close_resource_id;
-   hg_id_t           destroy_resource_id;
-   hg_id_t           list_resources_id;
-} alpha_admin;
+   hg_id_t           create_cache_id;
+   hg_id_t           open_cache_id;
+   hg_id_t           close_cache_id;
+   hg_id_t           destroy_cache_id;
+   hg_id_t           list_caches_id;
+} cachercize_admin;
 
 #endif

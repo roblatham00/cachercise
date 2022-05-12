@@ -6,7 +6,7 @@ target_include_directories (test-admin PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/../include
   ${CMAKE_CURRENT_BINARY_DIR}/../src
 )
-target_link_libraries (test-admin alpha-server alpha-admin)
+target_link_libraries (test-admin cachercize-server cachercize-admin)
 
 add_executable (test-client test-client.c munit/munit.c)
 target_include_directories (test-client PUBLIC 
@@ -14,7 +14,7 @@ target_include_directories (test-client PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/../include
   ${CMAKE_CURRENT_BINARY_DIR}/../src
 )
-target_link_libraries (test-client alpha-server alpha-admin alpha-client)
+target_link_libraries (test-client cachercize-server cachercize-admin cachercize-client)
 
 add_test (NAME TestAdmin COMMAND ./test-admin)
 add_test (NAME TestClient COMMAND ./test-client)

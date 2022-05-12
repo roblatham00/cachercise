@@ -1,7 +1,7 @@
 # (C) 2020 The University of Chicago
 # See COPYRIGHT in top-level directory.
 cmake_minimum_required (VERSION 3.8)
-project (alpha C CXX)
+project (cachercize C CXX)
 enable_testing ()
 
 add_definitions (-g -Wextra -Wall -Wpedantic)
@@ -45,11 +45,11 @@ pkg_check_modules (ABTIO REQUIRED IMPORTED_TARGET abt-io)
 pkg_check_modules (JSONC REQUIRED IMPORTED_TARGET json-c)
 
 # library version set here (e.g. for shared libs).
-set (ALPHA_VERSION_MAJOR 0)
-set (ALPHA_VERSION_MINOR 1)
-set (ALPHA_VERSION_PATCH 0)
-set (ALPHA_VERSION
-     "${ALPHA_VERSION_MAJOR}.${ALPHA_VERSION_MINOR}.${ALPHA_VERSION_PATCH}")
+set (CACHERCIZE_VERSION_MAJOR 0)
+set (CACHERCIZE_VERSION_MINOR 1)
+set (CACHERCIZE_VERSION_PATCH 0)
+set (CACHERCIZE_VERSION
+     "${CACHERCIZE_VERSION_MAJOR}.${CACHERCIZE_VERSION_MINOR}.${CACHERCIZE_VERSION_PATCH}")
 
 add_subdirectory (src)
 if(${ENABLE_TESTS})
