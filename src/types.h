@@ -6,6 +6,7 @@
 #ifndef _PARAMS_H
 #define _PARAMS_H
 
+#include <stdlib.h>
 #include <mercury.h>
 #include <mercury_macros.h>
 #include <mercury_proc.h>

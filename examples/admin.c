@@ -4,6 +4,7 @@
  * See COPYRIGHT in top-level directory.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <margo.h>
 #include <cachercize/cachercize-admin.h>
