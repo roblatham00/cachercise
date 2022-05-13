@@ -30,6 +30,7 @@ set (CMAKE_PREFIX_PATH "" CACHE STRING "External dependencies path")
 set (BUILD_SHARED_LIBS "ON" CACHE BOOL "Build a shared library")
 
 find_package (PkgConfig REQUIRED)
+find_package(fmt REQUIRED)
 
 if (${ENABLE_BEDROCK})
     find_package(bedrock REQUIRED)
