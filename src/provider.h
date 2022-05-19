@@ -41,6 +41,7 @@ typedef struct cachercize_provider {
     hg_id_t hello_id;
     hg_id_t sum_id;
     /* ... add other RPC identifiers here ... */
+    hg_id_t io_id;
 } cachercize_provider;
 
 #endif

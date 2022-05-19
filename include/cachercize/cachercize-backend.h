@@ -29,6 +29,8 @@ typedef struct cachercize_backend_impl {
     void (*hello)(void*);
     int32_t (*sum)(void*, int32_t, int32_t);
     // ... add other functions here
+    int64_t (*io)(void*, int64_t, int64_t, int64_t, int);
+
 } cachercize_backend_impl;
 
 /**

@@ -64,6 +64,9 @@ static void cachercize_sum_ult(hg_handle_t h);
 
 /* add other RPC declarations here */
 
+static DECLARE_MARGO_RPC_HANDLER(cachercize_io_ult)
+static void cachercize_io_ult(hg_handle_t h);
+
 int cachercize_provider_register(
         margo_instance_id mid,
         uint16_t provider_id,
@@ -149,7 +152,11 @@ int cachercize_provider_register(
     p->sum_id = id;
 
     /* add other RPC registration here */
-    /* ... */
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_io",
+            io_in_t, io_out_t,
+            cachercize_io_ult, provider_id, p->pool);
+    margo_register_data(mid, id, (void *)p, NULL);
+    p->io_id = id;
 
     /* add backends available at compiler time (e.g. default/dummy backends) */
     cachercize_provider_register_dummy_backend(p); // function from "dummy/dummy-backend.h"
@@ -174,6 +181,7 @@ static void cachercize_finalize_provider(void* p)
     margo_deregister(provider->mid, provider->hello_id);
     margo_deregister(provider->mid, provider->sum_id);
     /* deregister other RPC ids ... */
+    margo_deregister(provider->mid, provider->io_id);
     remove_all_caches(provider);
     free(provider->backend_types);
     free(provider->token);
@@ -580,6 +588,49 @@ finish:
     margo_destroy(h);
 }
 static DEFINE_MARGO_RPC_HANDLER(cachercize_sum_ult)
+
+static void cachercize_io_ult(hg_handle_t h)
+{
+    hg_return_t hret;
+    io_in_t in;
+    io_out_t out;
+
+    /* find the margo instance */
+    margo_instance_id mid = margo_hg_handle_get_instance(h);
+
+    /* find the provider */
+    const struct hg_info* info = margo_get_info(h);
+    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+
+    /* deserialize the input */
+    hret = margo_get_input(h, &in);
+    if(hret != HG_SUCCESS) {
+        margo_error(mid, "Could not deserialize output (mercury error %d)", hret);
+        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        goto finish;
+    }
+
+    /* find the cache */
+    cachercize_cache* cache = find_cache(provider, &in.cache_id);
+    if(!cache) {
+        margo_error(mid, "Could not find requested cache");
+        out.ret = CACHERCIZE_ERR_INVALID_CACHE;
+        goto finish;
+    }
+
+    /* call hello on the cache's context */
+    out.result = cache->fn->io(cache->ctx, in.count, in.offset, in.scratch, in.kind);
+    out.ret = CACHERCIZE_SUCCESS;
+
+    margo_debug(mid, "Called I/O RPC");
+
+finish:
+    hret = margo_respond(h, &out);
+    hret = margo_free_input(h, &in);
+    margo_destroy(h);
+
+}
+static DEFINE_MARGO_RPC_HANDLER(cachercize_io_ult)
 
 static inline cachercize_cache* find_cache(
         cachercize_provider_t provider,

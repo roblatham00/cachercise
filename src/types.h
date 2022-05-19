@@ -99,6 +99,23 @@ MERCURY_GEN_PROC(sum_out_t,
         ((int32_t)(result))\
         ((int32_t)(ret)))
 
+MERCURY_GEN_PROC(io_in_t,
+        ((cachercize_cache_id_t)(cache_id))\
+        ((uint64_t)(count))\
+        ((int64_t)(offset))\
+        ((int64_t)(scratch))\
+        ((int64_t)(kind)) )
+
+enum {
+ CACHERCIZE_WRITE,
+ CACHERCIZE_READ
+};
+
+MERCURY_GEN_PROC(io_out_t,
+        ((uint64_t)(bytes))\
+        ((int64_t)(scratch))\
+        ((int64_t)(result))\
+        ((int64_t)(ret)) )
 /* Extra hand-coded serialization functions */
 
 static inline hg_return_t hg_proc_cachercize_cache_id_t(

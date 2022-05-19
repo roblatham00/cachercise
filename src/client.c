@@ -21,9 +21,11 @@ cachercize_return_t cachercize_client_init(margo_instance_id mid, cachercize_cli
     if(flag == HG_TRUE) {
         margo_registered_name(mid, "cachercize_sum", &c->sum_id, &flag);
         margo_registered_name(mid, "cachercize_hello", &c->hello_id, &flag);
+        margo_registered_name(mid, "cachercize_io", &c->io_id, &flag);
     } else {
         c->sum_id = MARGO_REGISTER(mid, "cachercize_sum", sum_in_t, sum_out_t, NULL);
         c->hello_id = MARGO_REGISTER(mid, "cachercize_hello", hello_in_t, void, NULL);
+        c->hello_id = MARGO_REGISTER(mid, "cachercize_io", io_in_t, io_out_t, NULL);
         margo_registered_disable_response(mid, c->hello_id, HG_TRUE);
     }
 
@@ -157,5 +159,52 @@ cachercize_return_t cachercize_compute_sum(
 finish:
     margo_free_output(h, &out);
     margo_destroy(h);
+    return ret;
+}
+
+cachercize_return_t cachercize_io(cachercize_cache_handle_t handle,
+        void * buf,
+        uint64_t count,
+        int64_t offset, int kind)
+{
+    hg_handle_t h;
+    io_in_t in;
+    io_out_t out;
+    hg_return_t hret;
+    cachercize_return_t ret;
+
+    memcpy(&in.cache_id, &(handle->cache_id), sizeof(in.cache_id));
+    in.count  = count;
+    in.offset = offset;
+    if (kind == CACHERCIZE_WRITE) {
+        /* don't want to deal with bulk registration in this concurrency benchmark */
+        if (count > sizeof (int64_t)) count = sizeof(int64_t);
+        memcpy(&(in.scratch), buf, count);
+    }
+    in.kind   = kind;
+
+    hret = margo_create(handle->client->mid, handle->addr, handle->client->io_id, &h);
+    if(hret != HG_SUCCESS)
+        return CACHERCIZE_ERR_FROM_MERCURY;
+
+    hret = margo_provider_forward(handle->provider_id, h, &in);
+    if(hret != HG_SUCCESS) {
+        ret = CACHERCIZE_ERR_FROM_MERCURY;
+        goto finish;
+    }
+
+    hret = margo_get_output(h, &out);
+    if(hret != HG_SUCCESS) {
+        ret = CACHERCIZE_ERR_FROM_MERCURY;
+        goto finish;
+    }
+
+    if (kind == CACHERCIZE_READ) {
+        if (out.bytes > sizeof(int64_t)) out.bytes = sizeof(int64_t);
+            memcpy(buf, &(out.scratch), out.bytes);
+    }
+    return out.bytes;
+
+finish:
     return ret;
 }

@@ -14,6 +14,7 @@ typedef struct cachercize_client {
    margo_instance_id mid;
    hg_id_t           hello_id;
    hg_id_t           sum_id;
+   hg_id_t           io_id;
    uint64_t          num_cache_handles;
 } cachercize_client;
 
