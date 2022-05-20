@@ -106,11 +106,6 @@ MERCURY_GEN_PROC(io_in_t,
         ((int64_t)(scratch))\
         ((int64_t)(kind)) )
 
-enum {
- CACHERCIZE_WRITE,
- CACHERCIZE_READ
-};
-
 MERCURY_GEN_PROC(io_out_t,
         ((uint64_t)(bytes))\
         ((int64_t)(scratch))\

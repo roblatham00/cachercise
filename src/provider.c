@@ -618,7 +618,7 @@ static void cachercize_io_ult(hg_handle_t h)
         goto finish;
     }
 
-    /* call hello on the cache's context */
+    /* call io on the cache's context */
     out.result = cache->fn->io(cache->ctx, in.count, in.offset, in.scratch, in.kind);
     out.ret = CACHERCIZE_SUCCESS;
 

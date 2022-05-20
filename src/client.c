@@ -162,10 +162,12 @@ finish:
     return ret;
 }
 
-cachercize_return_t cachercize_io(cachercize_cache_handle_t handle,
+cachercize_return_t cachercize_io(
+        cachercize_cache_handle_t handle,
         void * buf,
         uint64_t count,
-        int64_t offset, int kind)
+        int64_t offset,
+        int kind)
 {
     hg_handle_t h;
     io_in_t in;

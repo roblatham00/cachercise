@@ -84,6 +84,19 @@ cachercize_return_t cachercize_compute_sum(
         int32_t y,
         int32_t* result);
 
+enum {
+ CACHERCIZE_WRITE,
+ CACHERCIZE_READ
+};
+
+#define cachercize_read(h, b, c, o) cachercize_io((h), (b), (c), (o), CACHERCIZE_READ);
+#define cachercize_write(h, b, c, o) cachercize_io((h), (b), (c), (o), CACHERCIZE_WRITE);
+cachercize_return_t cachercize_io(
+        cachercize_cache_handle_t handle,
+        void *buf,
+        uint64_t count,
+        int64_t offset,
+        int kind);
 #ifdef __cplusplus
 }
 #endif
