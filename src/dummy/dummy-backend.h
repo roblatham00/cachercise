@@ -6,8 +6,8 @@
 #ifndef _DUMMY_BACKEND_H
 #define _DUMMY_BACKEND_H
 
-#include "cachercize/cachercize-server.h"
+#include "cachercise/cachercise-server.h"
 
-cachercize_return_t cachercize_provider_register_dummy_backend(cachercize_provider_t provider);
+cachercise_return_t cachercise_provider_register_dummy_backend(cachercise_provider_t provider);
 
 #endif

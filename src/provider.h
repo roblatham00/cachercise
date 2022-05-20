@@ -9,17 +9,17 @@
 #include <margo.h>
 #include <abt-io.h>
 #include <uuid.h>
-#include "cachercize/cachercize-backend.h"
+#include "cachercise/cachercise-backend.h"
 #include "uthash.h"
 
-typedef struct cachercize_cache {
-    cachercize_backend_impl* fn;  // pointer to function mapping for this backend
+typedef struct cachercise_cache {
+    cachercise_backend_impl* fn;  // pointer to function mapping for this backend
     void*               ctx; // context required by the backend
-    cachercize_cache_id_t id;  // identifier of the backend
+    cachercise_cache_id_t id;  // identifier of the backend
     UT_hash_handle      hh;  // handle for uthash
-} cachercize_cache;
+} cachercise_cache;
 
-typedef struct cachercize_provider {
+typedef struct cachercise_provider {
     /* Margo/Argobots/Mercury environment */
     margo_instance_id  mid;                 // Margo instance
     uint16_t           provider_id;         // Provider id
@@ -28,9 +28,9 @@ typedef struct cachercize_provider {
     char*              token;               // Security token
     /* Resources and backend types */
     size_t               num_backend_types; // number of backend types
-    cachercize_backend_impl** backend_types;     // array of pointers to backend types
+    cachercise_backend_impl** backend_types;     // array of pointers to backend types
     size_t               num_caches;     // number of caches
-    cachercize_cache*      caches;         // hash of caches by uuid
+    cachercise_cache*      caches;         // hash of caches by uuid
     /* RPC identifiers for admins */
     hg_id_t create_cache_id;
     hg_id_t open_cache_id;
@@ -42,6 +42,6 @@ typedef struct cachercize_provider {
     hg_id_t sum_id;
     /* ... add other RPC identifiers here ... */
     hg_id_t io_id;
-} cachercize_provider;
+} cachercise_provider;
 
 #endif

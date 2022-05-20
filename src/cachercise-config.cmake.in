@@ -1,0 +1,17 @@
+#
+# cachercise-config.cmake.in
+#
+
+set(CACHERCISE_VERSION @CACHERCISE_VERSION@)
+
+@PACKAGE_INIT@
+
+set_and_check(CACHERCISE_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+
+check_required_components(cachercise)
+
+#include (CMakeFindDependencyMacro)
+#find_dependency (PkgConfig)
+#pkg_check_modules (margo REQUIRED margo)
+
+include ("${CMAKE_CURRENT_LIST_DIR}/cachercise-targets.cmake")

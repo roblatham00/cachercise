@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <margo.h>
-#include <cachercize/cachercize-server.h>
+#include <cachercise/cachercise-server.h>
 
 int main(int argc, char** argv)
 {
@@ -23,9 +23,9 @@ int main(int argc, char** argv)
     margo_addr_free(mid,my_address);
     margo_info(mid, "Server running at address %s, with provider id 42", addr_str);
 
-    struct cachercize_provider_args args = CACHERCIZE_PROVIDER_ARGS_INIT;
+    struct cachercise_provider_args args = CACHERCISE_PROVIDER_ARGS_INIT;
 
-    cachercize_provider_register(mid, 42, &args, CACHERCIZE_PROVIDER_IGNORE);
+    cachercise_provider_register(mid, 42, &args, CACHERCISE_PROVIDER_IGNORE);
 
     margo_wait_for_finalize(mid);
 

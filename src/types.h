@@ -11,9 +11,9 @@
 #include <mercury_macros.h>
 #include <mercury_proc.h>
 #include <mercury_proc_string.h>
-#include "cachercize/cachercize-common.h"
+#include "cachercise/cachercise-common.h"
 
-static inline hg_return_t hg_proc_cachercize_cache_id_t(hg_proc_t proc, cachercize_cache_id_t *id);
+static inline hg_return_t hg_proc_cachercise_cache_id_t(hg_proc_t proc, cachercise_cache_id_t *id);
 
 /* Admin RPC types */
 
@@ -24,7 +24,7 @@ MERCURY_GEN_PROC(create_cache_in_t,
 
 MERCURY_GEN_PROC(create_cache_out_t,
         ((int32_t)(ret))\
-        ((cachercize_cache_id_t)(id)))
+        ((cachercise_cache_id_t)(id)))
 
 MERCURY_GEN_PROC(open_cache_in_t,
         ((hg_string_t)(type))\
@@ -33,18 +33,18 @@ MERCURY_GEN_PROC(open_cache_in_t,
 
 MERCURY_GEN_PROC(open_cache_out_t,
         ((int32_t)(ret))\
-        ((cachercize_cache_id_t)(id)))
+        ((cachercise_cache_id_t)(id)))
 
 MERCURY_GEN_PROC(close_cache_in_t,
         ((hg_string_t)(token))\
-        ((cachercize_cache_id_t)(id)))
+        ((cachercise_cache_id_t)(id)))
 
 MERCURY_GEN_PROC(close_cache_out_t,
         ((int32_t)(ret)))
 
 MERCURY_GEN_PROC(destroy_cache_in_t,
         ((hg_string_t)(token))\
-        ((cachercize_cache_id_t)(id)))
+        ((cachercise_cache_id_t)(id)))
 
 MERCURY_GEN_PROC(destroy_cache_out_t,
         ((int32_t)(ret)))
@@ -56,7 +56,7 @@ MERCURY_GEN_PROC(list_caches_in_t,
 typedef struct list_caches_out_t {
     int32_t ret;
     hg_size_t count;
-    cachercize_cache_id_t* ids;
+    cachercise_cache_id_t* ids;
 } list_caches_out_t;
 
 static inline hg_return_t hg_proc_list_caches_out_t(hg_proc_t proc, void *data)
@@ -72,7 +72,7 @@ static inline hg_return_t hg_proc_list_caches_out_t(hg_proc_t proc, void *data)
 
     switch(hg_proc_get_op(proc)) {
     case HG_DECODE:
-        out->ids = (cachercize_cache_id_t*)calloc(out->count, sizeof(*(out->ids)));
+        out->ids = (cachercise_cache_id_t*)calloc(out->count, sizeof(*(out->ids)));
         /* fall through */
     case HG_ENCODE:
         if(out->ids)
@@ -88,10 +88,10 @@ static inline hg_return_t hg_proc_list_caches_out_t(hg_proc_t proc, void *data)
 /* Client RPC types */
 
 MERCURY_GEN_PROC(hello_in_t,
-        ((cachercize_cache_id_t)(cache_id)))
+        ((cachercise_cache_id_t)(cache_id)))
 
 MERCURY_GEN_PROC(sum_in_t,
-        ((cachercize_cache_id_t)(cache_id))\
+        ((cachercise_cache_id_t)(cache_id))\
         ((int32_t)(x))\
         ((int32_t)(y)))
 
@@ -100,7 +100,7 @@ MERCURY_GEN_PROC(sum_out_t,
         ((int32_t)(ret)))
 
 MERCURY_GEN_PROC(io_in_t,
-        ((cachercize_cache_id_t)(cache_id))\
+        ((cachercise_cache_id_t)(cache_id))\
         ((uint64_t)(count))\
         ((int64_t)(offset))\
         ((int64_t)(scratch))\
@@ -113,8 +113,8 @@ MERCURY_GEN_PROC(io_out_t,
         ((int64_t)(ret)) )
 /* Extra hand-coded serialization functions */
 
-static inline hg_return_t hg_proc_cachercize_cache_id_t(
-        hg_proc_t proc, cachercize_cache_id_t *id)
+static inline hg_return_t hg_proc_cachercise_cache_id_t(
+        hg_proc_t proc, cachercise_cache_id_t *id)
 {
     return hg_proc_memcpy(proc, id, sizeof(*id));
 }

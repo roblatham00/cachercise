@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <margo.h>
 #include <assert.h>
-#include <cachercize/cachercize-client.h>
-#include <cachercize/cachercize-cache.h>
+#include <cachercise/cachercise-client.h>
+#include <cachercise/cachercise-cache.h>
 
 #define FATAL(...) \
     do { \
@@ -23,7 +23,7 @@ int main(int argc, char** argv)
         exit(-1);
     }
 
-    cachercize_return_t ret;
+    cachercise_return_t ret;
     hg_return_t hret;
     const char* svr_addr_str = argv[1];
     uint16_t    provider_id  = atoi(argv[2]);
@@ -41,51 +41,51 @@ int main(int argc, char** argv)
         FATAL(mid,"margo_addr_lookup failed for address %s", svr_addr_str);
     }
 
-    cachercize_client_t cachercize_clt;
-    cachercize_cache_handle_t cachercize_rh;
+    cachercise_client_t cachercise_clt;
+    cachercise_cache_handle_t cachercise_rh;
 
-    margo_info(mid, "Creating CACHERCIZE client");
-    ret = cachercize_client_init(mid, &cachercize_clt);
-    if(ret != CACHERCIZE_SUCCESS) {
-        FATAL(mid,"cachercize_client_init failed (ret = %d)", ret);
+    margo_info(mid, "Creating CACHERCISE client");
+    ret = cachercise_client_init(mid, &cachercise_clt);
+    if(ret != CACHERCISE_SUCCESS) {
+        FATAL(mid,"cachercise_client_init failed (ret = %d)", ret);
     }
 
-    cachercize_cache_id_t cache_id;
-    cachercize_cache_id_from_string(id_str, &cache_id);
+    cachercise_cache_id_t cache_id;
+    cachercise_cache_id_from_string(id_str, &cache_id);
 
     margo_info(mid, "Creating cache handle for cache %s", id_str);
-    ret = cachercize_cache_handle_create(
-            cachercize_clt, svr_addr, provider_id,
-            cache_id, &cachercize_rh);
-    if(ret != CACHERCIZE_SUCCESS) {
-        FATAL(mid,"cachercize_cache_handle_create failed (ret = %d)", ret);
+    ret = cachercise_cache_handle_create(
+            cachercise_clt, svr_addr, provider_id,
+            cache_id, &cachercise_rh);
+    if(ret != CACHERCISE_SUCCESS) {
+        FATAL(mid,"cachercise_cache_handle_create failed (ret = %d)", ret);
     }
 
     int32_t i, result;
     for (i=0; i< 1000; i++) {
-        ret = cachercize_compute_sum(cachercize_rh, 45, 32, &result);
-        if (ret != CACHERCIZE_SUCCESS)
-        FATAL(mid,"cachercize_compute_sum failed (ret = %d)", ret);
+        ret = cachercise_compute_sum(cachercise_rh, 45, 32, &result);
+        if (ret != CACHERCISE_SUCCESS)
+        FATAL(mid,"cachercise_compute_sum failed (ret = %d)", ret);
     }
     printf("issued %d sum rpcs\n", i);
 
     for (i=0; i< 1000; i++ ) {
         int value=i;
-        ret = cachercize_write(cachercize_rh, &value, sizeof(value), i);
+        ret = cachercise_write(cachercise_rh, &value, sizeof(value), i);
     }
     printf("issued %d io RPCS\n", i);
 
 
     margo_info(mid, "Releasing cache handle");
-    ret = cachercize_cache_handle_release(cachercize_rh);
-    if(ret != CACHERCIZE_SUCCESS) {
-        FATAL(mid,"cachercize_cache_handle_release failed (ret = %d)", ret);
+    ret = cachercise_cache_handle_release(cachercise_rh);
+    if(ret != CACHERCISE_SUCCESS) {
+        FATAL(mid,"cachercise_cache_handle_release failed (ret = %d)", ret);
     }
 
     margo_info(mid, "Finalizing client");
-    ret = cachercize_client_finalize(cachercize_clt);
-    if(ret != CACHERCIZE_SUCCESS) {
-        FATAL(mid,"cachercize_client_finalize failed (ret = %d)", ret);
+    ret = cachercise_client_finalize(cachercise_clt);
+    if(ret != CACHERCISE_SUCCESS) {
+        FATAL(mid,"cachercise_client_finalize failed (ret = %d)", ret);
     }
 
     hret = margo_addr_free(mid, svr_addr);

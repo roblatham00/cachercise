@@ -5,8 +5,8 @@
  */
 #include <stdio.h>
 #include <margo.h>
-#include <cachercize/cachercize-server.h>
-#include <cachercize/cachercize-admin.h>
+#include <cachercise/cachercise-server.h>
+#include <cachercise/cachercise-admin.h>
 #include "munit/munit.h"
 
 struct test_context {
@@ -32,13 +32,13 @@ static void* test_context_setup(const MunitParameter params[], void* user_data)
     // get address of current process
     hg_return_t hret = margo_addr_self(mid, &addr);
     munit_assert_int(hret, ==, HG_SUCCESS);
-    // register cachercize provider
-    struct cachercize_provider_args args = CACHERCIZE_PROVIDER_ARGS_INIT;
+    // register cachercise provider
+    struct cachercise_provider_args args = CACHERCISE_PROVIDER_ARGS_INIT;
     args.token = valid_token;
-    cachercize_return_t ret = cachercize_provider_register(
+    cachercise_return_t ret = cachercise_provider_register(
             mid, provider_id, &args,
-            CACHERCIZE_PROVIDER_IGNORE);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+            CACHERCISE_PROVIDER_IGNORE);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
     // create test context
     struct test_context* context = (struct test_context*)calloc(1, sizeof(*context));
     munit_assert_not_null(context);
@@ -62,14 +62,14 @@ static MunitResult test_admin(const MunitParameter params[], void* data)
     (void)params;
     (void)data;
     struct test_context* context = (struct test_context*)data;
-    cachercize_admin_t admin;
-    cachercize_return_t ret;
+    cachercise_admin_t admin;
+    cachercise_return_t ret;
     // test that we can create an admin object
-    ret = cachercize_admin_init(context->mid, &admin);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    ret = cachercise_admin_init(context->mid, &admin);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
     // test that we can free the admin object
-    ret = cachercize_admin_finalize(admin);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    ret = cachercise_admin_finalize(admin);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
 
     return MUNIT_OK;
 }
@@ -79,37 +79,37 @@ static MunitResult test_cache(const MunitParameter params[], void* data)
     (void)params;
     (void)data;
     struct test_context* context = (struct test_context*)data;
-    cachercize_admin_t admin;
-    cachercize_return_t ret;
-    cachercize_cache_id_t id;
+    cachercise_admin_t admin;
+    cachercise_return_t ret;
+    cachercise_cache_id_t id;
     // test that we can create an admin object
-    ret = cachercize_admin_init(context->mid, &admin);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    ret = cachercise_admin_init(context->mid, &admin);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
     
     // test that we can create a cache with type "dummy"
-    ret = cachercize_create_cache(admin, context->addr,
+    ret = cachercise_create_cache(admin, context->addr,
             provider_id, valid_token, "dummy", backend_config, &id);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
    
     // test that we can list the caches
-    cachercize_cache_id_t ids[4];
+    cachercise_cache_id_t ids[4];
     size_t count = 4;
-    ret = cachercize_list_caches(admin, context->addr,
+    ret = cachercise_list_caches(admin, context->addr,
             provider_id, valid_token, ids, &count);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
     munit_assert_ulong(count, ==, 1);
     munit_assert_memory_equal(sizeof(id), ids, &id);
 
     // test that we can destroy the cache we just created
-    ret = cachercize_destroy_cache(admin, context->addr,
+    ret = cachercise_destroy_cache(admin, context->addr,
             provider_id, valid_token, id);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
     // note: open and close are essentially the same as create and
     // destroy in this code so we won't be testing them.
 
     // test that we can free the admin object
-    ret = cachercize_admin_finalize(admin);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    ret = cachercise_admin_finalize(admin);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
 
     return MUNIT_OK;
 }
@@ -119,51 +119,51 @@ static MunitResult test_invalid(const MunitParameter params[], void* data)
     (void)params;
     (void)data;
     struct test_context* context = (struct test_context*)data;
-    cachercize_admin_t admin;
-    cachercize_return_t ret;
-    cachercize_cache_id_t id;
+    cachercise_admin_t admin;
+    cachercise_return_t ret;
+    cachercise_cache_id_t id;
     // test that we can create an admin object
-    ret = cachercize_admin_init(context->mid, &admin);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    ret = cachercise_admin_init(context->mid, &admin);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
 
     // test that calling the wrong provider id leads to an error
-    ret = cachercize_create_cache(admin, context->addr,
+    ret = cachercise_create_cache(admin, context->addr,
             provider_id + 1, valid_token, "dummy", backend_config, &id);
-    munit_assert_int(ret, ==, CACHERCIZE_ERR_FROM_MERCURY);
+    munit_assert_int(ret, ==, CACHERCISE_ERR_FROM_MERCURY);
 
     // test that calling with the wrong token leads to an error
-    ret = cachercize_create_cache(admin, context->addr,
+    ret = cachercise_create_cache(admin, context->addr,
             provider_id, wrong_token, "dummy", backend_config, &id);
-    munit_assert_int(ret, ==, CACHERCIZE_ERR_INVALID_TOKEN);
+    munit_assert_int(ret, ==, CACHERCISE_ERR_INVALID_TOKEN);
 
     // test that calling with the wrong config leads to an error
-    ret = cachercize_create_cache(admin, context->addr,
+    ret = cachercise_create_cache(admin, context->addr,
             provider_id, valid_token, "dummy", "{ashqw{", &id);
-    munit_assert_int(ret, ==, CACHERCIZE_ERR_INVALID_CONFIG);
+    munit_assert_int(ret, ==, CACHERCISE_ERR_INVALID_CONFIG);
 
     // test that calling with an unknown backend leads to an error
-    ret = cachercize_create_cache(admin, context->addr,
+    ret = cachercise_create_cache(admin, context->addr,
             provider_id, valid_token, "blah", backend_config, &id);
-    munit_assert_int(ret, ==, CACHERCIZE_ERR_INVALID_BACKEND);
+    munit_assert_int(ret, ==, CACHERCISE_ERR_INVALID_BACKEND);
 
     // this creation should be successful
-    ret = cachercize_create_cache(admin, context->addr,
+    ret = cachercise_create_cache(admin, context->addr,
             provider_id, valid_token, "dummy", backend_config, &id);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
 
     // test that destroying an invalid id leads to an error
-    cachercize_cache_id_t wrong_id;
+    cachercise_cache_id_t wrong_id;
     memset((void*) &wrong_id, 0, sizeof(wrong_id));
-    ret = cachercize_destroy_cache(admin, context->addr, provider_id, valid_token, wrong_id);
-    munit_assert_int(ret, ==, CACHERCIZE_ERR_INVALID_CACHE);
+    ret = cachercise_destroy_cache(admin, context->addr, provider_id, valid_token, wrong_id);
+    munit_assert_int(ret, ==, CACHERCISE_ERR_INVALID_CACHE);
 
     // correctly destroy the created cache
-    ret = cachercize_destroy_cache(admin, context->addr, provider_id, valid_token, id);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    ret = cachercise_destroy_cache(admin, context->addr, provider_id, valid_token, id);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
 
     // test that we can free the admin object
-    ret = cachercize_admin_finalize(admin);
-    munit_assert_int(ret, ==, CACHERCIZE_SUCCESS);
+    ret = cachercise_admin_finalize(admin);
+    munit_assert_int(ret, ==, CACHERCISE_SUCCESS);
 
     return MUNIT_OK;
 }
@@ -176,9 +176,9 @@ static MunitTest test_suite_tests[] = {
 };
 
 static const MunitSuite test_suite = { 
-    (char*) "/cachercize/admin", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE
+    (char*) "/cachercise/admin", test_suite_tests, NULL, 1, MUNIT_SUITE_OPTION_NONE
 };
 
 int main(int argc, char* argv[MUNIT_ARRAY_PARAM(argc + 1)]) {
-    return munit_suite_main(&test_suite, (void*) "cachercize", argc, argv);
+    return munit_suite_main(&test_suite, (void*) "cachercise", argc, argv);
 }

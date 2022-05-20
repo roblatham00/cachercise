@@ -3,100 +3,100 @@
  *
  * See COPYRIGHT in top-level directory.
  */
-#include "cachercize/cachercize-server.h"
+#include "cachercise/cachercise-server.h"
 #include "provider.h"
 #include "types.h"
 
 // backends that we want to add at compile time
 #include "dummy/dummy-backend.h"
 
-static void cachercize_finalize_provider(void* p);
+static void cachercise_finalize_provider(void* p);
 
 /* Functions to manipulate the hash of caches */
-static inline cachercize_cache* find_cache(
-        cachercize_provider_t provider,
-        const cachercize_cache_id_t* id);
+static inline cachercise_cache* find_cache(
+        cachercise_provider_t provider,
+        const cachercise_cache_id_t* id);
 
-static inline cachercize_return_t add_cache(
-        cachercize_provider_t provider,
-        cachercize_cache* cache);
+static inline cachercise_return_t add_cache(
+        cachercise_provider_t provider,
+        cachercise_cache* cache);
 
-static inline cachercize_return_t remove_cache(
-        cachercize_provider_t provider,
-        const cachercize_cache_id_t* id,
+static inline cachercise_return_t remove_cache(
+        cachercise_provider_t provider,
+        const cachercise_cache_id_t* id,
         int close_cache);
 
 static inline void remove_all_caches(
-        cachercize_provider_t provider);
+        cachercise_provider_t provider);
 
 /* Functions to manipulate the list of backend types */
-static inline cachercize_backend_impl* find_backend_impl(
-        cachercize_provider_t provider,
+static inline cachercise_backend_impl* find_backend_impl(
+        cachercise_provider_t provider,
         const char* name);
 
-static inline cachercize_return_t add_backend_impl(
-        cachercize_provider_t provider,
-        cachercize_backend_impl* backend);
+static inline cachercise_return_t add_backend_impl(
+        cachercise_provider_t provider,
+        cachercise_backend_impl* backend);
 
 /* Function to check the validity of the token sent by an admin
  * (returns 0 is the token is incorrect) */
 static inline int check_token(
-        cachercize_provider_t provider,
+        cachercise_provider_t provider,
         const char* token);
 
 /* Admin RPCs */
-static DECLARE_MARGO_RPC_HANDLER(cachercize_create_cache_ult)
-static void cachercize_create_cache_ult(hg_handle_t h);
-static DECLARE_MARGO_RPC_HANDLER(cachercize_open_cache_ult)
-static void cachercize_open_cache_ult(hg_handle_t h);
-static DECLARE_MARGO_RPC_HANDLER(cachercize_close_cache_ult)
-static void cachercize_close_cache_ult(hg_handle_t h);
-static DECLARE_MARGO_RPC_HANDLER(cachercize_destroy_cache_ult)
-static void cachercize_destroy_cache_ult(hg_handle_t h);
-static DECLARE_MARGO_RPC_HANDLER(cachercize_list_caches_ult)
-static void cachercize_list_caches_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_create_cache_ult)
+static void cachercise_create_cache_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_open_cache_ult)
+static void cachercise_open_cache_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_close_cache_ult)
+static void cachercise_close_cache_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_destroy_cache_ult)
+static void cachercise_destroy_cache_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_list_caches_ult)
+static void cachercise_list_caches_ult(hg_handle_t h);
 
 /* Client RPCs */
-static DECLARE_MARGO_RPC_HANDLER(cachercize_hello_ult)
-static void cachercize_hello_ult(hg_handle_t h);
-static DECLARE_MARGO_RPC_HANDLER(cachercize_sum_ult)
-static void cachercize_sum_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_hello_ult)
+static void cachercise_hello_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_sum_ult)
+static void cachercise_sum_ult(hg_handle_t h);
 
 /* add other RPC declarations here */
 
-static DECLARE_MARGO_RPC_HANDLER(cachercize_io_ult)
-static void cachercize_io_ult(hg_handle_t h);
+static DECLARE_MARGO_RPC_HANDLER(cachercise_io_ult)
+static void cachercise_io_ult(hg_handle_t h);
 
-int cachercize_provider_register(
+int cachercise_provider_register(
         margo_instance_id mid,
         uint16_t provider_id,
-        const struct cachercize_provider_args* args,
-        cachercize_provider_t* provider)
+        const struct cachercise_provider_args* args,
+        cachercise_provider_t* provider)
 {
-    struct cachercize_provider_args a = CACHERCIZE_PROVIDER_ARGS_INIT;
+    struct cachercise_provider_args a = CACHERCISE_PROVIDER_ARGS_INIT;
     if(args) a = *args;
-    cachercize_provider_t p;
+    cachercise_provider_t p;
     hg_id_t id;
     hg_bool_t flag;
 
-    margo_info(mid, "Registering CACHERCIZE provider with provider id %u", provider_id);
+    margo_info(mid, "Registering CACHERCISE provider with provider id %u", provider_id);
 
     flag = margo_is_listening(mid);
     if(flag == HG_FALSE) {
         margo_error(mid, "Margo instance is not a server");
-        return CACHERCIZE_ERR_INVALID_ARGS;
+        return CACHERCISE_ERR_INVALID_ARGS;
     }
 
-    margo_provider_registered_name(mid, "cachercize_sum", provider_id, &id, &flag);
+    margo_provider_registered_name(mid, "cachercise_sum", provider_id, &id, &flag);
     if(flag == HG_TRUE) {
         margo_error(mid, "Provider with the same provider id (%u) already register", provider_id);
-        return CACHERCIZE_ERR_INVALID_PROVIDER;
+        return CACHERCISE_ERR_INVALID_PROVIDER;
     }
 
-    p = (cachercize_provider_t)calloc(1, sizeof(*p));
+    p = (cachercise_provider_t)calloc(1, sizeof(*p));
     if(p == NULL) {
         margo_error(mid, "Could not allocate memory for provider");
-        return CACHERCIZE_ERR_ALLOCATION;
+        return CACHERCISE_ERR_ALLOCATION;
     }
 
     p->mid = mid;
@@ -106,73 +106,73 @@ int cachercize_provider_register(
     p->token = (a.token && strlen(a.token)) ? strdup(a.token) : NULL;
 
     /* Admin RPCs */
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_create_cache",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_create_cache",
             create_cache_in_t, create_cache_out_t,
-            cachercize_create_cache_ult, provider_id, p->pool);
+            cachercise_create_cache_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void*)p, NULL);
     p->create_cache_id = id;
 
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_open_cache",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_open_cache",
             open_cache_in_t, open_cache_out_t,
-            cachercize_open_cache_ult, provider_id, p->pool);
+            cachercise_open_cache_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void*)p, NULL);
     p->open_cache_id = id;
 
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_close_cache",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_close_cache",
             close_cache_in_t, close_cache_out_t,
-            cachercize_close_cache_ult, provider_id, p->pool);
+            cachercise_close_cache_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void*)p, NULL);
     p->close_cache_id = id;
 
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_destroy_cache",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_destroy_cache",
             destroy_cache_in_t, destroy_cache_out_t,
-            cachercize_destroy_cache_ult, provider_id, p->pool);
+            cachercise_destroy_cache_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void*)p, NULL);
     p->destroy_cache_id = id;
 
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_list_caches",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_list_caches",
             list_caches_in_t, list_caches_out_t,
-            cachercize_list_caches_ult, provider_id, p->pool);
+            cachercise_list_caches_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void*)p, NULL);
     p->list_caches_id = id;
 
     /* Client RPCs */
 
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_hello",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_hello",
             hello_in_t, void,
-            cachercize_hello_ult, provider_id, p->pool);
+            cachercise_hello_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void*)p, NULL);
     p->hello_id = id;
     margo_registered_disable_response(mid, id, HG_TRUE);
 
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_sum",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_sum",
             sum_in_t, sum_out_t,
-            cachercize_sum_ult, provider_id, p->pool);
+            cachercise_sum_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void*)p, NULL);
     p->sum_id = id;
 
     /* add other RPC registration here */
-    id = MARGO_REGISTER_PROVIDER(mid, "cachercize_io",
+    id = MARGO_REGISTER_PROVIDER(mid, "cachercise_io",
             io_in_t, io_out_t,
-            cachercize_io_ult, provider_id, p->pool);
+            cachercise_io_ult, provider_id, p->pool);
     margo_register_data(mid, id, (void *)p, NULL);
     p->io_id = id;
 
     /* add backends available at compiler time (e.g. default/dummy backends) */
-    cachercize_provider_register_dummy_backend(p); // function from "dummy/dummy-backend.h"
+    cachercise_provider_register_dummy_backend(p); // function from "dummy/dummy-backend.h"
 
-    margo_provider_push_finalize_callback(mid, p, &cachercize_finalize_provider, p);
+    margo_provider_push_finalize_callback(mid, p, &cachercise_finalize_provider, p);
 
     if(provider)
         *provider = p;
-    margo_info(mid, "CACHERCIZE provider registration done");
-    return CACHERCIZE_SUCCESS;
+    margo_info(mid, "CACHERCISE provider registration done");
+    return CACHERCISE_SUCCESS;
 }
 
-static void cachercize_finalize_provider(void* p)
+static void cachercise_finalize_provider(void* p)
 {
-    cachercize_provider_t provider = (cachercize_provider_t)p;
-    margo_info(provider->mid, "Finalizing CACHERCIZE provider");
+    cachercise_provider_t provider = (cachercise_provider_t)p;
+    margo_info(provider->mid, "Finalizing CACHERCISE provider");
     margo_deregister(provider->mid, provider->create_cache_id);
     margo_deregister(provider->mid, provider->open_cache_id);
     margo_deregister(provider->mid, provider->close_cache_id);
@@ -187,35 +187,35 @@ static void cachercize_finalize_provider(void* p)
     free(provider->token);
     margo_instance_id mid = provider->mid;
     free(provider);
-    margo_info(mid, "CACHERCIZE provider successfuly finalized");
+    margo_info(mid, "CACHERCISE provider successfuly finalized");
 }
 
-int cachercize_provider_destroy(
-        cachercize_provider_t provider)
+int cachercise_provider_destroy(
+        cachercise_provider_t provider)
 {
     margo_instance_id mid = provider->mid;
-    margo_info(mid, "Destroying CACHERCIZE provider");
+    margo_info(mid, "Destroying CACHERCISE provider");
     /* pop the finalize callback */
     margo_provider_pop_finalize_callback(provider->mid, provider);
     /* call the callback */
-    cachercize_finalize_provider(provider);
-    margo_info(mid, "CACHERCIZE provider successfuly destroyed");
-    return CACHERCIZE_SUCCESS;
+    cachercise_finalize_provider(provider);
+    margo_info(mid, "CACHERCISE provider successfuly destroyed");
+    return CACHERCISE_SUCCESS;
 }
 
-cachercize_return_t cachercize_provider_register_backend(
-        cachercize_provider_t provider,
-        cachercize_backend_impl* backend_impl)
+cachercise_return_t cachercise_provider_register_backend(
+        cachercise_provider_t provider,
+        cachercise_backend_impl* backend_impl)
 {
-    margo_info(provider->mid, "Adding backend implementation \"%s\" to CACHERCIZE provider",
+    margo_info(provider->mid, "Adding backend implementation \"%s\" to CACHERCISE provider",
              backend_impl->name);
     return add_backend_impl(provider, backend_impl);
 }
 
-static void cachercize_create_cache_ult(hg_handle_t h)
+static void cachercise_create_cache_ult(hg_handle_t h)
 {
     hg_return_t hret;
-    cachercize_return_t ret;
+    cachercise_return_t ret;
     create_cache_in_t  in;
     create_cache_out_t out;
 
@@ -224,57 +224,57 @@ static void cachercize_create_cache_ult(hg_handle_t h)
 
     /* find the provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
     if(hret != HG_SUCCESS) {
         margo_info(provider->mid, "Could not deserialize output (mercury error %d)", hret);
-        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        out.ret = CACHERCISE_ERR_FROM_MERCURY;
         goto finish;
     }
 
     /* check the token sent by the admin */
     if(!check_token(provider, in.token)) {
         margo_error(provider->mid, "Invalid token");
-        out.ret = CACHERCIZE_ERR_INVALID_TOKEN;
+        out.ret = CACHERCISE_ERR_INVALID_TOKEN;
         goto finish;
     }
 
     /* find the backend implementation for the requested type */
-    cachercize_backend_impl* backend = find_backend_impl(provider, in.type);
+    cachercise_backend_impl* backend = find_backend_impl(provider, in.type);
     if(!backend) {
         margo_error(provider->mid, "Could not find backend of type \"%s\"", in.type);
-        out.ret = CACHERCIZE_ERR_INVALID_BACKEND;
+        out.ret = CACHERCISE_ERR_INVALID_BACKEND;
         goto finish;
     }
 
     /* create a uuid for the new cache */
-    cachercize_cache_id_t id;
+    cachercise_cache_id_t id;
     uuid_generate(id.uuid);
 
     /* create the new cache's context */
     void* context = NULL;
     ret = backend->create_cache(provider, in.config, &context);
-    if(ret != CACHERCIZE_SUCCESS) {
+    if(ret != CACHERCISE_SUCCESS) {
         out.ret = ret;
         margo_error(provider->mid, "Could not create cache, backend returned %d", ret);
         goto finish;
     }
 
     /* allocate a cache, set it up, and add it to the provider */
-    cachercize_cache* cache = (cachercize_cache*)calloc(1, sizeof(*cache));
+    cachercise_cache* cache = (cachercise_cache*)calloc(1, sizeof(*cache));
     cache->fn  = backend;
     cache->ctx = context;
     cache->id  = id;
     add_cache(provider, cache);
 
     /* set the response */
-    out.ret = CACHERCIZE_SUCCESS;
+    out.ret = CACHERCISE_SUCCESS;
     out.id = id;
 
     char id_str[37];
-    cachercize_cache_id_to_string(id, id_str);
+    cachercise_cache_id_to_string(id, id_str);
     margo_debug(provider->mid, "Created cache %s of type \"%s\"", id_str, in.type);
 
 finish:
@@ -282,12 +282,12 @@ finish:
     hret = margo_free_input(h, &in);
     margo_destroy(h);
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_create_cache_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_create_cache_ult)
 
-static void cachercize_open_cache_ult(hg_handle_t h)
+static void cachercise_open_cache_ult(hg_handle_t h)
 {
     hg_return_t hret;
-    cachercize_return_t ret;
+    cachercise_return_t ret;
     open_cache_in_t  in;
     open_cache_out_t out;
 
@@ -296,57 +296,57 @@ static void cachercize_open_cache_ult(hg_handle_t h)
 
     /* find the provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
     if(hret != HG_SUCCESS) {
         margo_error(mid, "Could not deserialize output (mercury error %d)", hret);
-        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        out.ret = CACHERCISE_ERR_FROM_MERCURY;
         goto finish;
     }
 
     /* check the token sent by the admin */
     if(!check_token(provider, in.token)) {
         margo_error(mid, "Invalid token");
-        out.ret = CACHERCIZE_ERR_INVALID_TOKEN;
+        out.ret = CACHERCISE_ERR_INVALID_TOKEN;
         goto finish;
     }
 
     /* find the backend implementation for the requested type */
-    cachercize_backend_impl* backend = find_backend_impl(provider, in.type);
+    cachercise_backend_impl* backend = find_backend_impl(provider, in.type);
     if(!backend) {
         margo_error(mid, "Could not find backend of type \"%s\"", in.type);
-        out.ret = CACHERCIZE_ERR_INVALID_BACKEND;
+        out.ret = CACHERCISE_ERR_INVALID_BACKEND;
         goto finish;
     }
 
     /* create a uuid for the new cache */
-    cachercize_cache_id_t id;
+    cachercise_cache_id_t id;
     uuid_generate(id.uuid);
 
     /* create the new cache's context */
     void* context = NULL;
     ret = backend->open_cache(provider, in.config, &context);
-    if(ret != CACHERCIZE_SUCCESS) {
+    if(ret != CACHERCISE_SUCCESS) {
         margo_error(mid, "Backend failed to open cache");
         out.ret = ret;
         goto finish;
     }
 
     /* allocate a cache, set it up, and add it to the provider */
-    cachercize_cache* cache = (cachercize_cache*)calloc(1, sizeof(*cache));
+    cachercise_cache* cache = (cachercise_cache*)calloc(1, sizeof(*cache));
     cache->fn  = backend;
     cache->ctx = context;
     cache->id  = id;
     add_cache(provider, cache);
 
     /* set the response */
-    out.ret = CACHERCIZE_SUCCESS;
+    out.ret = CACHERCISE_SUCCESS;
     out.id = id;
 
     char id_str[37];
-    cachercize_cache_id_to_string(id, id_str);
+    cachercise_cache_id_to_string(id, id_str);
     margo_debug(mid, "Created cache %s of type \"%s\"", id_str, in.type);
 
 finish:
@@ -354,12 +354,12 @@ finish:
     hret = margo_free_input(h, &in);
     margo_destroy(h);
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_open_cache_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_open_cache_ult)
 
-static void cachercize_close_cache_ult(hg_handle_t h)
+static void cachercise_close_cache_ult(hg_handle_t h)
 {
     hg_return_t hret;
-    cachercize_return_t ret;
+    cachercise_return_t ret;
     close_cache_in_t  in;
     close_cache_out_t out;
 
@@ -368,20 +368,20 @@ static void cachercize_close_cache_ult(hg_handle_t h)
 
     /* find the provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
     if(hret != HG_SUCCESS) {
         margo_error(mid, "Could not deserialize output (mercury error %d)", hret);
-        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        out.ret = CACHERCISE_ERR_FROM_MERCURY;
         goto finish;
     }
 
     /* check the token sent by the admin */
     if(!check_token(provider, in.token)) {
         margo_error(mid, "Invalid token");
-        out.ret = CACHERCIZE_ERR_INVALID_TOKEN;
+        out.ret = CACHERCISE_ERR_INVALID_TOKEN;
         goto finish;
     }
 
@@ -391,7 +391,7 @@ static void cachercize_close_cache_ult(hg_handle_t h)
     out.ret = ret;
 
     char id_str[37];
-    cachercize_cache_id_to_string(in.id, id_str);
+    cachercise_cache_id_to_string(in.id, id_str);
     margo_debug(mid, "Removed cache with id %s", id_str);
 
 finish:
@@ -399,9 +399,9 @@ finish:
     hret = margo_free_input(h, &in);
     margo_destroy(h);
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_close_cache_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_close_cache_ult)
 
-static void cachercize_destroy_cache_ult(hg_handle_t h)
+static void cachercise_destroy_cache_ult(hg_handle_t h)
 {
     hg_return_t hret;
     destroy_cache_in_t  in;
@@ -412,28 +412,28 @@ static void cachercize_destroy_cache_ult(hg_handle_t h)
 
     /* find the provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
     if(hret != HG_SUCCESS) {
         margo_error(mid, "Could not deserialize output (mercury error %d)", hret);
-        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        out.ret = CACHERCISE_ERR_FROM_MERCURY;
         goto finish;
     }
 
     /* check the token sent by the admin */
     if(!check_token(provider, in.token)) {
         margo_error(mid, "Invalid token");
-        out.ret = CACHERCIZE_ERR_INVALID_TOKEN;
+        out.ret = CACHERCISE_ERR_INVALID_TOKEN;
         goto finish;
     }
 
     /* find the cache */
-    cachercize_cache* cache = find_cache(provider, &in.id);
+    cachercise_cache* cache = find_cache(provider, &in.id);
     if(!cache) {
         margo_error(mid, "Could not find cache");
-        out.ret = CACHERCIZE_ERR_INVALID_CACHE;
+        out.ret = CACHERCISE_ERR_INVALID_CACHE;
         goto finish;
     }
 
@@ -444,9 +444,9 @@ static void cachercize_destroy_cache_ult(hg_handle_t h)
      * (its close function will NOT be called) */
     out.ret = remove_cache(provider, &in.id, 0);
 
-    if(out.ret == CACHERCIZE_SUCCESS) {
+    if(out.ret == CACHERCISE_SUCCESS) {
         char id_str[37];
-        cachercize_cache_id_to_string(in.id, id_str);
+        cachercise_cache_id_to_string(in.id, id_str);
         margo_debug(mid, "Destroyed cache with id %s", id_str);
     } else {
         margo_error(mid, "Could not destroy cache, cache may be left in an invalid state");
@@ -458,9 +458,9 @@ finish:
     hret = margo_free_input(h, &in);
     margo_destroy(h);
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_destroy_cache_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_destroy_cache_ult)
 
-static void cachercize_list_caches_ult(hg_handle_t h)
+static void cachercise_list_caches_ult(hg_handle_t h)
 {
     hg_return_t hret;
     list_caches_in_t  in;
@@ -472,31 +472,31 @@ static void cachercize_list_caches_ult(hg_handle_t h)
 
     /* find provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
     if(hret != HG_SUCCESS) {
         margo_error(mid, "Could not deserialize output (mercury error %d)", hret);
-        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        out.ret = CACHERCISE_ERR_FROM_MERCURY;
         goto finish;
     }
 
     /* check the token sent by the admin */
     if(!check_token(provider, in.token)) {
         margo_error(mid, "Invalid token");
-        out.ret = CACHERCIZE_ERR_INVALID_TOKEN;
+        out.ret = CACHERCISE_ERR_INVALID_TOKEN;
         goto finish;
     }
 
     /* allocate array of cache ids */
-    out.ret   = CACHERCIZE_SUCCESS;
+    out.ret   = CACHERCISE_SUCCESS;
     out.count = provider->num_caches < in.max_ids ? provider->num_caches : in.max_ids;
-    out.ids   = (cachercize_cache_id_t*)calloc(provider->num_caches, sizeof(*out.ids));
+    out.ids   = (cachercise_cache_id_t*)calloc(provider->num_caches, sizeof(*out.ids));
 
     /* iterate over the hash of caches to fill the array of cache ids */
     unsigned i = 0;
-    cachercize_cache *r, *tmp;
+    cachercise_cache *r, *tmp;
     HASH_ITER(hh, provider->caches, r, tmp) {
         out.ids[i++] = r->id;
     }
@@ -509,9 +509,9 @@ finish:
     free(out.ids);
     margo_destroy(h);
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_list_caches_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_list_caches_ult)
 
-static void cachercize_hello_ult(hg_handle_t h)
+static void cachercise_hello_ult(hg_handle_t h)
 {
     hg_return_t hret;
     hello_in_t in;
@@ -521,7 +521,7 @@ static void cachercize_hello_ult(hg_handle_t h)
 
     /* find provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
@@ -531,7 +531,7 @@ static void cachercize_hello_ult(hg_handle_t h)
     }
 
     /* find the cache */
-    cachercize_cache* cache = find_cache(provider, &in.cache_id);
+    cachercise_cache* cache = find_cache(provider, &in.cache_id);
     if(!cache) {
         margo_error(mid, "Could not find requested cache");
         goto finish;
@@ -545,9 +545,9 @@ static void cachercize_hello_ult(hg_handle_t h)
 finish:
     margo_destroy(h);
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_hello_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_hello_ult)
 
-static void cachercize_sum_ult(hg_handle_t h)
+static void cachercise_sum_ult(hg_handle_t h)
 {
     hg_return_t hret;
     sum_in_t     in;
@@ -558,27 +558,27 @@ static void cachercize_sum_ult(hg_handle_t h)
 
     /* find the provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
     if(hret != HG_SUCCESS) {
         margo_error(mid, "Could not deserialize output (mercury error %d)", hret);
-        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        out.ret = CACHERCISE_ERR_FROM_MERCURY;
         goto finish;
     }
 
     /* find the cache */
-    cachercize_cache* cache = find_cache(provider, &in.cache_id);
+    cachercise_cache* cache = find_cache(provider, &in.cache_id);
     if(!cache) {
         margo_error(mid, "Could not find requested cache");
-        out.ret = CACHERCIZE_ERR_INVALID_CACHE;
+        out.ret = CACHERCISE_ERR_INVALID_CACHE;
         goto finish;
     }
 
     /* call hello on the cache's context */
     out.result = cache->fn->sum(cache->ctx, in.x, in.y);
-    out.ret = CACHERCIZE_SUCCESS;
+    out.ret = CACHERCISE_SUCCESS;
 
     margo_debug(mid, "Called sum RPC");
 
@@ -587,9 +587,9 @@ finish:
     hret = margo_free_input(h, &in);
     margo_destroy(h);
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_sum_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_sum_ult)
 
-static void cachercize_io_ult(hg_handle_t h)
+static void cachercise_io_ult(hg_handle_t h)
 {
     hg_return_t hret;
     io_in_t in;
@@ -600,27 +600,27 @@ static void cachercize_io_ult(hg_handle_t h)
 
     /* find the provider */
     const struct hg_info* info = margo_get_info(h);
-    cachercize_provider_t provider = (cachercize_provider_t)margo_registered_data(mid, info->id);
+    cachercise_provider_t provider = (cachercise_provider_t)margo_registered_data(mid, info->id);
 
     /* deserialize the input */
     hret = margo_get_input(h, &in);
     if(hret != HG_SUCCESS) {
         margo_error(mid, "Could not deserialize output (mercury error %d)", hret);
-        out.ret = CACHERCIZE_ERR_FROM_MERCURY;
+        out.ret = CACHERCISE_ERR_FROM_MERCURY;
         goto finish;
     }
 
     /* find the cache */
-    cachercize_cache* cache = find_cache(provider, &in.cache_id);
+    cachercise_cache* cache = find_cache(provider, &in.cache_id);
     if(!cache) {
         margo_error(mid, "Could not find requested cache");
-        out.ret = CACHERCIZE_ERR_INVALID_CACHE;
+        out.ret = CACHERCISE_ERR_INVALID_CACHE;
         goto finish;
     }
 
     /* call io on the cache's context */
     out.result = cache->fn->io(cache->ctx, in.count, in.offset, in.scratch, in.kind);
-    out.ret = CACHERCIZE_SUCCESS;
+    out.ret = CACHERCISE_SUCCESS;
 
     margo_debug(mid, "Called I/O RPC");
 
@@ -630,40 +630,40 @@ finish:
     margo_destroy(h);
 
 }
-static DEFINE_MARGO_RPC_HANDLER(cachercize_io_ult)
+static DEFINE_MARGO_RPC_HANDLER(cachercise_io_ult)
 
-static inline cachercize_cache* find_cache(
-        cachercize_provider_t provider,
-        const cachercize_cache_id_t* id)
+static inline cachercise_cache* find_cache(
+        cachercise_provider_t provider,
+        const cachercise_cache_id_t* id)
 {
-    cachercize_cache* cache = NULL;
-    HASH_FIND(hh, provider->caches, id, sizeof(cachercize_cache_id_t), cache);
+    cachercise_cache* cache = NULL;
+    HASH_FIND(hh, provider->caches, id, sizeof(cachercise_cache_id_t), cache);
     return cache;
 }
 
-static inline cachercize_return_t add_cache(
-        cachercize_provider_t provider,
-        cachercize_cache* cache)
+static inline cachercise_return_t add_cache(
+        cachercise_provider_t provider,
+        cachercise_cache* cache)
 {
-    cachercize_cache* existing = find_cache(provider, &(cache->id));
+    cachercise_cache* existing = find_cache(provider, &(cache->id));
     if(existing) {
-        return CACHERCIZE_ERR_INVALID_CACHE;
+        return CACHERCISE_ERR_INVALID_CACHE;
     }
-    HASH_ADD(hh, provider->caches, id, sizeof(cachercize_cache_id_t), cache);
+    HASH_ADD(hh, provider->caches, id, sizeof(cachercise_cache_id_t), cache);
     provider->num_caches += 1;
-    return CACHERCIZE_SUCCESS;
+    return CACHERCISE_SUCCESS;
 }
 
-static inline cachercize_return_t remove_cache(
-        cachercize_provider_t provider,
-        const cachercize_cache_id_t* id,
+static inline cachercise_return_t remove_cache(
+        cachercise_provider_t provider,
+        const cachercise_cache_id_t* id,
         int close_cache)
 {
-    cachercize_cache* cache = find_cache(provider, id);
+    cachercise_cache* cache = find_cache(provider, id);
     if(!cache) {
-        return CACHERCIZE_ERR_INVALID_CACHE;
+        return CACHERCISE_ERR_INVALID_CACHE;
     }
-    cachercize_return_t ret = CACHERCIZE_SUCCESS;
+    cachercise_return_t ret = CACHERCISE_SUCCESS;
     if(close_cache) {
         ret = cache->fn->close_cache(cache->ctx);
     }
@@ -674,9 +674,9 @@ static inline cachercize_return_t remove_cache(
 }
 
 static inline void remove_all_caches(
-        cachercize_provider_t provider)
+        cachercise_provider_t provider)
 {
-    cachercize_cache *r, *tmp;
+    cachercise_cache *r, *tmp;
     HASH_ITER(hh, provider->caches, r, tmp) {
         HASH_DEL(provider->caches, r);
         r->fn->close_cache(r->ctx);
@@ -685,32 +685,32 @@ static inline void remove_all_caches(
     provider->num_caches = 0;
 }
 
-static inline cachercize_backend_impl* find_backend_impl(
-        cachercize_provider_t provider,
+static inline cachercise_backend_impl* find_backend_impl(
+        cachercise_provider_t provider,
         const char* name)
 {
     size_t i;
     for(i = 0; i < provider->num_backend_types; i++) {
-        cachercize_backend_impl* impl = provider->backend_types[i];
+        cachercise_backend_impl* impl = provider->backend_types[i];
         if(strcmp(name, impl->name) == 0)
             return impl;
     }
     return NULL;
 }
 
-static inline cachercize_return_t add_backend_impl(
-        cachercize_provider_t provider,
-        cachercize_backend_impl* backend)
+static inline cachercise_return_t add_backend_impl(
+        cachercise_provider_t provider,
+        cachercise_backend_impl* backend)
 {
     provider->num_backend_types += 1;
     provider->backend_types = realloc(provider->backend_types,
                                       provider->num_backend_types);
     provider->backend_types[provider->num_backend_types-1] = backend;
-    return CACHERCIZE_SUCCESS;
+    return CACHERCISE_SUCCESS;
 }
 
 static inline int check_token(
-        cachercize_provider_t provider,
+        cachercise_provider_t provider,
         const char* token)
 {
     if(!provider->token) return 1;

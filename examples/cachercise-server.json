@@ -11,7 +11,10 @@
 	"providers": [
 		{
 		"name": "cachercise",
-		"type": "cachercise_provider"
+		"type": "cachercise_provider",
+		"provider_id" : 1,
+		"config": {
+		}
 		}
 	]
 }

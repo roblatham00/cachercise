@@ -5,7 +5,7 @@
  */
 #include <string.h>
 #include <json-c/json.h>
-#include "cachercize/cachercize-backend.h"
+#include "cachercise/cachercise-backend.h"
 #include "../provider.h"
 #include "dummy-backend.h"
 
@@ -14,8 +14,8 @@ typedef struct dummy_context {
     /* ... */
 } dummy_context;
 
-static cachercize_return_t dummy_create_cache(
-        cachercize_provider_t provider,
+static cachercise_return_t dummy_create_cache(
+        cachercise_provider_t provider,
         const char* config_str,
         void** context)
 {
@@ -34,7 +34,7 @@ static cachercize_return_t dummy_create_cache(
             margo_error(provider->mid, "JSON parse error: %s",
                       json_tokener_error_desc(jerr));
             json_tokener_free(tokener);
-            return CACHERCIZE_ERR_INVALID_CONFIG;
+            return CACHERCISE_ERR_INVALID_CONFIG;
         }
         json_tokener_free(tokener);
     } else {
@@ -45,11 +45,11 @@ static cachercize_return_t dummy_create_cache(
     dummy_context* ctx = (dummy_context*)calloc(1, sizeof(*ctx));
     ctx->config = config;
     *context = (void*)ctx;
-    return CACHERCIZE_SUCCESS;
+    return CACHERCISE_SUCCESS;
 }
 
-static cachercize_return_t dummy_open_cache(
-        cachercize_provider_t provider,
+static cachercise_return_t dummy_open_cache(
+        cachercise_provider_t provider,
         const char* config_str,
         void** context)
 {
@@ -69,7 +69,7 @@ static cachercize_return_t dummy_open_cache(
             margo_error(provider->mid, "JSON parse error: %s",
                       json_tokener_error_desc(jerr));
             json_tokener_free(tokener);
-            return CACHERCIZE_ERR_INVALID_CONFIG;
+            return CACHERCISE_ERR_INVALID_CONFIG;
         }
         json_tokener_free(tokener);
     } else {
@@ -80,23 +80,23 @@ static cachercize_return_t dummy_open_cache(
     dummy_context* ctx = (dummy_context*)calloc(1, sizeof(*ctx));
     ctx->config = config;
     *context = (void*)ctx;
-    return CACHERCIZE_SUCCESS;
+    return CACHERCISE_SUCCESS;
 }
 
-static cachercize_return_t dummy_close_cache(void* ctx)
+static cachercise_return_t dummy_close_cache(void* ctx)
 {
     dummy_context* context = (dummy_context*)ctx;
     json_object_put(context->config);
     free(context);
-    return CACHERCIZE_SUCCESS;
+    return CACHERCISE_SUCCESS;
 }
 
-static cachercize_return_t dummy_destroy_cache(void* ctx)
+static cachercise_return_t dummy_destroy_cache(void* ctx)
 {
     dummy_context* context = (dummy_context*)ctx;
     json_object_put(context->config);
     free(context);
-    return CACHERCIZE_SUCCESS;
+    return CACHERCISE_SUCCESS;
 }
 
 static void dummy_say_hello(void* ctx)
@@ -112,7 +112,7 @@ static int32_t dummy_compute_sum(void* ctx, int32_t x, int32_t y)
     return x+y;
 }
 
-static cachercize_backend_impl dummy_backend = {
+static cachercise_backend_impl dummy_backend = {
     .name             = "dummy",
 
     .create_cache  = dummy_create_cache,
@@ -124,7 +124,7 @@ static cachercize_backend_impl dummy_backend = {
     .sum              = dummy_compute_sum
 };
 
-cachercize_return_t cachercize_provider_register_dummy_backend(cachercize_provider_t provider)
+cachercise_return_t cachercise_provider_register_dummy_backend(cachercise_provider_t provider)
 {
-    return cachercize_provider_register_backend(provider, &dummy_backend);
+    return cachercise_provider_register_backend(provider, &dummy_backend);
 }
