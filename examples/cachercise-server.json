@@ -6,12 +6,12 @@
 		}
 	],
 	"libraries": {
-		"cachercise_provider":"libcachercise-bedrock-module.so"
+		"cachercise":"libcachercise-bedrock-module.so"
 	},
 	"providers": [
 		{
 		"name": "cachercise",
-		"type": "cachercise_provider",
+		"type": "cachercise",
 		"provider_id" : 1,
 		"config": {
 		}
