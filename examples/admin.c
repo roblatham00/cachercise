@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 
     margo_info(mid,"Creating cache");
     ret = cachercise_create_cache(admin, svr_addr, provider_id, NULL,
-                                "dummy", "This is a config", &id);
+                                "dummy", "{}", &id);
     if(ret != CACHERCISE_SUCCESS) {
         FATAL(mid,"cachercise_create_cache failed (ret = %d)", ret);
     }
