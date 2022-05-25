@@ -1,6 +1,7 @@
 # set source files
 set (server-src-files
-     provider.c)
+     provider.c
+     hoard.cc)
 
 set (client-src-files
      client.c)
