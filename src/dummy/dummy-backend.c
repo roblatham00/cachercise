@@ -8,11 +8,14 @@
 #include "cachercise/cachercise-backend.h"
 #include "../provider.h"
 #include "dummy-backend.h"
+#include "../hoard-c.h"
 
 typedef struct dummy_context {
     struct json_object* config;
+    hoard_t h;
     /* ... */
 } dummy_context;
+
 
 static cachercise_return_t dummy_create_cache(
         cachercise_provider_t provider,
@@ -44,6 +47,7 @@ static cachercise_return_t dummy_create_cache(
 
     dummy_context* ctx = (dummy_context*)calloc(1, sizeof(*ctx));
     ctx->config = config;
+    ctx->h      = hoard_init();
     *context = (void*)ctx;
     return CACHERCISE_SUCCESS;
 }
@@ -87,6 +91,7 @@ static cachercise_return_t dummy_close_cache(void* ctx)
 {
     dummy_context* context = (dummy_context*)ctx;
     json_object_put(context->config);
+    hoard_finalize(context->h);
     free(context);
     return CACHERCISE_SUCCESS;
 }
@@ -95,6 +100,7 @@ static cachercise_return_t dummy_destroy_cache(void* ctx)
 {
     dummy_context* context = (dummy_context*)ctx;
     json_object_put(context->config);
+    hoard_finalize(context->h);
     free(context);
     return CACHERCISE_SUCCESS;
 }
@@ -112,6 +118,15 @@ static int32_t dummy_compute_sum(void* ctx, int32_t x, int32_t y)
     return x+y;
 }
 
+static int64_t dummy_io(void *ctx, uint64_t count, int64_t offset, int64_t *scratch, int kind)
+{
+    dummy_context* context = (dummy_context*)ctx;
+    if (kind == CACHERCISE_WRITE)
+       return hoard_put(context->h, scratch, count/sizeof(int64_t), offset);
+    else
+        return hoard_get(context->h, scratch, count/sizeof(int64_t), offset);
+}
+
 static cachercise_backend_impl dummy_backend = {
     .name             = "dummy",
 
@@ -121,7 +136,8 @@ static cachercise_backend_impl dummy_backend = {
     .destroy_cache = dummy_destroy_cache,
 
     .hello            = dummy_say_hello,
-    .sum              = dummy_compute_sum
+    .sum              = dummy_compute_sum,
+    .io               = dummy_io
 };
 
 cachercise_return_t cachercise_provider_register_dummy_backend(cachercise_provider_t provider)

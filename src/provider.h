@@ -11,6 +11,7 @@
 #include <uuid.h>
 #include "cachercise/cachercise-backend.h"
 #include "uthash.h"
+#include "hoard-c.h"
 
 typedef struct cachercise_cache {
     cachercise_backend_impl* fn;  // pointer to function mapping for this backend
@@ -31,6 +32,7 @@ typedef struct cachercise_provider {
     cachercise_backend_impl** backend_types;     // array of pointers to backend types
     size_t               num_caches;     // number of caches
     cachercise_cache*      caches;         // hash of caches by uuid
+    hoard_t hoard;                         // our caching data structure
     /* RPC identifiers for admins */
     hg_id_t create_cache_id;
     hg_id_t open_cache_id;
@@ -42,6 +44,7 @@ typedef struct cachercise_provider {
     hg_id_t sum_id;
     /* ... add other RPC identifiers here ... */
     hg_id_t io_id;
+
 } cachercise_provider;
 
 #endif

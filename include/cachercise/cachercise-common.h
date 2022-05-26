@@ -33,6 +33,12 @@ typedef enum cachercise_return_t {
     CACHERCISE_ERR_OTHER              /* Other error */
 } cachercise_return_t;
 
+enum {
+ CACHERCISE_WRITE,
+ CACHERCISE_READ
+};
+
+
 /**
  * @brief Identifier for a cache.
  */

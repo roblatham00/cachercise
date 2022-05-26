@@ -84,11 +84,6 @@ cachercise_return_t cachercise_compute_sum(
         int32_t y,
         int32_t* result);
 
-enum {
- CACHERCISE_WRITE,
- CACHERCISE_READ
-};
-
 #define cachercise_read(h, b, c, o) cachercise_io((h), (b), (c), (o), CACHERCISE_READ);
 #define cachercise_write(h, b, c, o) cachercise_io((h), (b), (c), (o), CACHERCISE_WRITE);
 cachercise_return_t cachercise_io(

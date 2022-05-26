@@ -29,7 +29,7 @@ typedef struct cachercise_backend_impl {
     void (*hello)(void*);
     int32_t (*sum)(void*, int32_t, int32_t);
     // ... add other functions here
-    int64_t (*io)(void*, int64_t, int64_t, int64_t, int);
+    int64_t (*io)(void*, uint64_t, int64_t, int64_t*, int);
 
 } cachercise_backend_impl;
 

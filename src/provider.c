@@ -589,6 +589,7 @@ finish:
 }
 static DEFINE_MARGO_RPC_HANDLER(cachercise_sum_ult)
 
+
 static void cachercise_io_ult(hg_handle_t h)
 {
     hg_return_t hret;
@@ -619,7 +620,7 @@ static void cachercise_io_ult(hg_handle_t h)
     }
 
     /* call io on the cache's context */
-    out.result = cache->fn->io(cache->ctx, in.count, in.offset, in.scratch, in.kind);
+    out.result = cache->fn->io(cache->ctx, in.count, in.offset, &(in.scratch), in.kind);
     out.ret = CACHERCISE_SUCCESS;
 
     margo_debug(mid, "Called I/O RPC");
