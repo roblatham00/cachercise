@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     uint16_t    provider_id  = atoi(argv[2]);
     cachercise_cache_id_t id;
 
-    margo_instance_id mid = margo_init("tcp", MARGO_CLIENT_MODE, 0, 0);
+    margo_instance_id mid = margo_init("na+sm", MARGO_CLIENT_MODE, 0, 0);
     assert(mid);
 
     hret = margo_addr_lookup(mid, svr_addr_str, &svr_addr);

@@ -32,7 +32,7 @@ int main(int argc, char** argv)
         FATAL(MARGO_INSTANCE_NULL,"id should be 36 character long");
     }
 
-    margo_instance_id mid = margo_init("tcp", MARGO_CLIENT_MODE, 0, 0);
+    margo_instance_id mid = margo_init("na+sm", MARGO_CLIENT_MODE, 0, 0);
     assert(mid);
 
     hg_addr_t svr_addr;
