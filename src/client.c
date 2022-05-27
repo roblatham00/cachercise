@@ -25,7 +25,7 @@ cachercise_return_t cachercise_client_init(margo_instance_id mid, cachercise_cli
     } else {
         c->sum_id = MARGO_REGISTER(mid, "cachercise_sum", sum_in_t, sum_out_t, NULL);
         c->hello_id = MARGO_REGISTER(mid, "cachercise_hello", hello_in_t, void, NULL);
-        c->hello_id = MARGO_REGISTER(mid, "cachercise_io", io_in_t, io_out_t, NULL);
+        c->io_id = MARGO_REGISTER(mid, "cachercise_io", io_in_t, io_out_t, NULL);
         margo_registered_disable_response(mid, c->hello_id, HG_TRUE);
     }
 
