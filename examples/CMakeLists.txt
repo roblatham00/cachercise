@@ -7,5 +7,5 @@ target_link_libraries (example-admin cachercise-admin)
 add_executable (example-client ${CMAKE_CURRENT_SOURCE_DIR}/client.c)
 target_link_libraries (example-client cachercise-client)
 
-add_executable (example-cachebench ${CMAKE_CURRENT_SOURCE_DIR}/cachebench.c)
-target_link_libraries (example-cachebench cachercise-client)
+#add_executable (example-cachebench ${CMAKE_CURRENT_SOURCE_DIR}/cachebench.c)
+#target_link_libraries (example-cachebench cachercise-client)
