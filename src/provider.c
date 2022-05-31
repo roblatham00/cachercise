@@ -622,6 +622,7 @@ static void cachercise_io_ult(hg_handle_t h)
     /* call io on the cache's context */
     out.result = cache->fn->io(cache->ctx, in.count, in.offset, &(in.scratch), in.kind);
     out.ret = CACHERCISE_SUCCESS;
+    out.scratch = in.scratch;
 
     margo_debug(mid, "Called I/O RPC");
 
