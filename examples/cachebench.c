@@ -89,7 +89,8 @@ static int parse_json(const char* json_file, struct json_object** json_cfg)
     MPI_Comm_size(MPI_COMM_WORLD, &nranks);
     CONFIG_OVERRIDE_INTEGER(*json_cfg, "nranks", nranks, 1);
 
-    /* TODO: set defaults if not present */
+    /* set defaults if not present */
+    CONFIG_HAS_OR_CREATE(*json_cfg, int, "items_per_process", 100, val);
 
     return (0);
 }
@@ -116,6 +117,40 @@ static int parse_args(int argc,
         }
     }
     if (opts->json_file) return (parse_json(opts->json_file, json_cfg));
+    return 0;
+}
+
+int dump_json(margo_instance_id mid, cachercise_cache_handle_t cachercise_rh, struct json_object * json_cfg)
+{
+    struct json_tokener*    tokener;
+    enum json_tokener_error jerr;
+    char* cli_cfg_str = NULL;
+    struct json_object* margo_config;
+
+    /* retrieve local margo configuration */
+    cli_cfg_str = margo_get_config(mid);
+
+    /* parse margo config and injected into the benchmark config */
+    tokener = json_tokener_new();
+    margo_config
+	= json_tokener_parse_ex(tokener, cli_cfg_str, strlen(cli_cfg_str));
+    if (!margo_config) {
+	jerr = json_tokener_get_error(tokener);
+	fprintf(stderr, "JSON parse error: %s",
+		json_tokener_error_desc(jerr));
+	json_tokener_free(tokener);
+	return -1;
+    }
+    json_tokener_free(tokener);
+    /* delete existing margo object, if present */
+    json_object_object_del(json_cfg, "margo");
+    /* add new one, derived at run time */
+    json_object_object_add(json_cfg, "margo", margo_config);
+
+    printf("\"quintain-benchmark\" : %s\n",
+	    json_object_to_json_string_ext(
+		json_cfg,
+		JSON_C_TO_STRING_PRETTY | JSON_C_TO_STRING_NOSLASHESCAPE));
     return 0;
 }
 
@@ -241,19 +276,46 @@ int main(int argc, char** argv)
         FATAL(mid,"cachercise_cache_handle_create failed (ret = %d)", ret);
     }
 
+    int nr_items = json_object_get_int(
+            json_object_object_get(json_cfg, "items_per_process"));
+
+    double duration = MPI_Wtime();
     int i;
-    for (i=0; i< 10; i++ ) {
+    for (i=0; i< nr_items; i++ ) {
         int64_t value=i*nprocs+rank+100;
         ret = cachercise_write(cachercise_rh, &value, sizeof(value), i*nprocs+rank);
     }
+    duration = MPI_Wtime() - duration;
+
+    double min_duration, max_duration, sum_duration;
+    MPI_Reduce(&duration, &max_duration, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&duration, &min_duration, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&duration, &sum_duration, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
+    if (rank == 0) {
+        int64_t total = nr_items*nprocs;
+        printf("%ld updates in %f %f %f seconds: %f %f %f updates/sec\n",
+                total,
+                sum_duration/nprocs, min_duration, max_duration,
+                total/(sum_duration/nprocs), total/min_duration, total/max_duration);
+    }
 
     MPI_Barrier(MPI_COMM_WORLD);
+    int64_t j, nerrors=0;
     if (rank == 0) {
-        int64_t compare[8];
-        for (i=0; i< sizeof(compare)/sizeof(compare[0]); i++)
-            ret = cachercise_read(cachercise_rh, &(compare[i]), sizeof(compare[0]), i );
-        printf("read back %ld %ld ... %ld\n", compare[0], compare[1], compare[7]);
+        int64_t compare;
+        for (j=0; j < i*nprocs; j++) {
+            ret = cachercise_read(cachercise_rh, &compare, sizeof(compare), j );
+            if (compare != j+100) {
+                nerrors++;
+                printf("expected %ld got %ld\n", j+100, compare);
+            }
+            if (nerrors > 5) break;
+        }
     }
+
+    if (rank == 0)
+        dump_json(mid, cachercise_rh, json_cfg);
 
     margo_info(mid, "Releasing cache handle");
     ret = cachercise_cache_handle_release(cachercise_rh);
@@ -272,7 +334,6 @@ int main(int argc, char** argv)
     if(ret != CACHERCISE_SUCCESS) {
         FATAL(mid,"cachercise_admin_finalize failed (ret = %d)", ret);
     }
-
 
 
 err_ssg_cleanup:
