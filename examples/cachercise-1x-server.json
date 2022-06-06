@@ -1,0 +1,20 @@
+{
+	"ssg":[
+		{
+			"name": "cachegroup",
+			"group_file": "cachercise.ssg"
+		}
+	],
+	"libraries": {
+		"cachercise":"libcachercise-bedrock-module.so"
+	},
+	"providers": [
+		{
+		"name": "cachercise",
+		"type": "cachercise",
+		"provider_id" : 1,
+		"config": {
+		}
+		}
+	]
+}
