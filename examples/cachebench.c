@@ -101,6 +101,8 @@ static int parse_args(int argc,
         struct json_object **json_cfg)
 {
     int opt, ret;
+    opts->json_file[0] = 0;
+    opts->group_file[0] = 0;
 
     while ( (opt = getopt(argc, argv, "g:j:")) != -1) {
         switch (opt) {
@@ -116,7 +118,7 @@ static int parse_args(int argc,
                 return -1;
         }
     }
-    if (opts->json_file) return (parse_json(opts->json_file, json_cfg));
+    if (opts->json_file[0]) return (parse_json(opts->json_file, json_cfg));
     return 0;
 }
 
