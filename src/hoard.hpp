@@ -34,7 +34,7 @@ int Hoard::put(int64_t* src, size_t count, size_t offset)
     std::cout << "Hoard::put: " << src[0] << "...  " << count << " items at " << offset << std::endl;;
     show();
 #endif
-    return 0;
+    return count;
 }
 int Hoard::get(int64_t *dest, size_t count, size_t offset)
 {
@@ -44,5 +44,5 @@ int Hoard::get(int64_t *dest, size_t count, size_t offset)
 #endif
     for (size_t i= 0; i< count; i++)
         dest[i] = m_hoard[offset+i];
-    return 0;
+    return count;
 }
