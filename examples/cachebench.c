@@ -296,16 +296,16 @@ int main(int argc, char** argv)
 
     if (rank == 0) {
         int64_t total = nr_items*nprocs;
-        printf("%ld updates in %f %f %f seconds: %f %f %f updates/sec\n",
-                total,
+        printf("%d procs %ld updates in %f %f %f seconds: %f %f %f updates/sec\n",
+                nprocs, total,
                 sum_duration/nprocs, min_duration, max_duration,
-                total/(sum_duration/nprocs), total/min_duration, total/max_duration);
+                total/(sum_duration/nprocs), total/max_duration, total/min_duration);
     }
 
     MPI_Barrier(MPI_COMM_WORLD);
     int64_t j, nerrors=0;
     if (rank == 0) {
-        int64_t compare;
+        int64_t compare=-9999;
         for (j=0; j < i*nprocs; j++) {
             ret = cachercise_read(cachercise_rh, &compare, sizeof(compare), j );
             if (compare != j+100) {
