@@ -203,7 +203,7 @@ cachercise_return_t cachercise_io(
 
     if (kind == CACHERCISE_READ) {
         if (out.bytes > sizeof(int64_t)) out.bytes = sizeof(int64_t);
-            memcpy(buf, &(out.scratch), out.bytes);
+	memcpy(buf, &(out.scratch), out.bytes);
     }
     return out.bytes;
 

@@ -124,14 +124,16 @@ static int32_t dummy_compute_sum(void* ctx, int32_t x, int32_t y)
 static int64_t dummy_io(void *ctx, uint64_t count, int64_t offset, int64_t *scratch, int kind)
 {
     dummy_context* context = (dummy_context*)ctx;
+    int64_t ret;
     if (kind == CACHERCISE_WRITE) {
-        int ret;
         ABT_mutex_lock(context->hoard_mutex);
         ret = hoard_put(context->h, scratch, count/sizeof(int64_t), offset);
         ABT_mutex_unlock(context->hoard_mutex);
         return ret;
-    } else
-        return hoard_get(context->h, scratch, count/sizeof(int64_t), offset);
+    } else {
+        ret = hoard_get(context->h, scratch, count/sizeof(int64_t), offset);
+        return ret;
+    }
 }
 
 static cachercise_backend_impl dummy_backend = {
