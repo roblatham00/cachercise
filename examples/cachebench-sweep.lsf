@@ -1,0 +1,35 @@
+#!/bin/bash
+# Begin LSF Directives
+#BSUB -P CSC332 
+#BSUB -W 0:10
+#BSUB -nnodes 17
+#BSUB -step_cgroup n
+#BSUB -J cachebench
+#BSUB -o cachebench.%J
+#BSUB -e cachebench.%J
+
+set -euo pipefail
+
+CACHERCISE=${HOME}/src/cachercise
+# summit has a read-only home so we need a place to store output
+WORKING_DIR=/gpfs/alpine/csc332/scratch/${USER}/cachebench
+
+mkdir -p ${WORKING_DIR}
+cd ${WORKING_DIR}
+
+# only need a single provider: looking to see how synchronization primitives scale with clients
+jsrun -n 1 -r 1 -c 1 bedrock -c ${CACHERCISE}/examples/cachercise-4x-server.json verbs:// &
+
+sleep 5
+echo " === provider === "
+jsrun -n 1 -r 1 -c 1 bedrock-query -p -s cachercise.ssg verbs://
+
+echo " === client === "
+for nodes in 1 2 4 8 16; do
+    for cores in 1 4 20 42; do
+        jsrun -n $nodes -a $cores -r 1 -c ALL_CPUS ${CACHERCISE}/cachebench -g cachercise.ssg -j ${CACHERCISE}/examples/cachercise-client.json
+    done
+done
+
+echo " === shutting down === "
+jsrun -n 1 -r 1 -c 1 bedrock-shutdown -s cachercise.ssg verbs://
