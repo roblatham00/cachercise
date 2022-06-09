@@ -20,7 +20,7 @@ Debug, Release, etc)
         -DCMAKE_INSTALL_PREFIX=... -DCMAKE_BUILD_TYPE=...
 ```
 
-## Running
+## Running Provider
 
 This is a bedrock-based service.  There are some json files in `examples` to get you started.  One way to start the provider side of this benchmark:
 
@@ -31,5 +31,19 @@ This is a bedrock-based service.  There are some json files in `examples` to get
 Once the provider is running the client can read the SSG group file to find the
 provider.  Client tunables are in a separate JSON file.  The
 `cachercise-client.json` file in `examples` is a good starting point.
+
+### Running with jx9
+
+bedrock will let you start the serivce with a json-like configuration language,
+instead of straight json.  See examples/cachercise-server.jx9, which allows us
+to vary the number of pools and execution streams like so, instead of creating
+a JSON file for each configuration:
+
+```
+   bedrock na+sm -v trace --jx9 -c examples/cachercise-server.jx9 --jx9-context 'num_extra_pools=4,num_extra_xstreams=16' &
+
+```
+
+## Clients
 
 The client is an MPI program.  You can find some job scripts in the `examples` directory.
