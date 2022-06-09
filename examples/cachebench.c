@@ -149,7 +149,7 @@ int dump_json(margo_instance_id mid, cachercise_cache_handle_t cachercise_rh, st
     /* add new one, derived at run time */
     json_object_object_add(json_cfg, "margo", margo_config);
 
-    printf("\"quintain-benchmark\" : %s\n",
+    printf("\"cachebench-benchmark\" : %s\n",
 	    json_object_to_json_string_ext(
 		json_cfg,
 		JSON_C_TO_STRING_PRETTY | JSON_C_TO_STRING_NOSLASHESCAPE));
