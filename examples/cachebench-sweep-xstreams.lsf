@@ -1,0 +1,40 @@
+#!/bin/bash
+# Begin LSF Directives
+#BSUB -P CSC332 
+#BSUB -W 0:10
+#BSUB -nnodes 33
+#BSUB -step_cgroup n
+#BSUB -J cachebench
+#BSUB -o cachebench.%J
+#BSUB -e cachebench.%J
+
+set -euo pipefail
+
+CACHERCISE=${HOME}/src/cachercise
+# summit has a read-only home so we need a place to store output
+WORKING_DIR=/gpfs/alpine/csc332/scratch/${USER}/cachebench
+
+mkdir -p ${WORKING_DIR}
+cd ${WORKING_DIR}
+
+
+for xstreams in 1 4 10 42; do 
+    # only need a single provider: looking to see how synchronization primitives scale with clients
+    jsrun -n 1 -r 1 -c 1 bedrock --jx9 -c ${CACHERCISE}/examples/cachercise-server.jx9 --jx9-context "num_extra_xstreams=$xstreams" verbs:// &
+
+    # give provider time to start up and save provider config
+    sleep 5 
+    echo " === provider: ${xstreams} xstreams === "
+    
+    jsrun -n 1 -r 1 -c 1 bedrock-query -p -s cachercise.ssg verbs://
+
+    echo " === client === "
+    for nodes in 1 2 4 8 16 32; do
+        # interesting... 42 processes per node might be bottlenecking?
+        #jsrun -n $nodes -a 42 -r 1 -c ALL_CPUS ${CACHERCISE}/cachebench -g cachercise.ssg -j ${CACHERCISE}/examples/cachercise-client.json
+        jsrun -n $nodes -a 20 -r 1 -c ALL_CPUS ${CACHERCISE}/cachebench -g cachercise.ssg -j ${CACHERCISE}/examples/cachercise-client.json
+    done
+
+    echo " === shutting down === "
+    jsrun -n 1 -r 1 -c 1 bedrock-shutdown -s cachercise.ssg verbs://
+done
