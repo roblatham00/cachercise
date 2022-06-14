@@ -1,0 +1,2487 @@
+[2022-06-10 14:30:05.782] [info] Registering CACHERCISE provider with provider id 1
+[2022-06-10 14:30:05.782] [info] Adding backend implementation "dummy" to CACHERCISE provider
+[2022-06-10 14:30:05.782] [info] CACHERCISE provider registration done
+[2022-06-10 14:30:05.782] [info] Bedrock daemon now running at ofi+verbs;ofi_rxm://10.41.14.108:41352
+ === provider: 1 xstreams === 
+{
+    "ofi+verbs;ofi_rxm://10.41.14.108:41352": {
+        "abt_io": [],
+        "bedrock": {
+            "pool": "__primary__",
+            "provider_id": 0
+        },
+        "clients": [],
+        "libraries": {
+            "cachercise": "libcachercise-bedrock-module.so"
+        },
+        "margo": {
+            "argobots": {
+                "abt_mem_max_num_stacks": 8,
+                "abt_thread_stacksize": 2097152,
+                "pools": [
+                    {
+                        "access": "mpmc",
+                        "kind": "fifo_wait",
+                        "name": "__primary__"
+                    }
+                ],
+                "version": "1.1",
+                "xstreams": [
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_0__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__primary__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    }
+                ]
+            },
+            "enable_diagnostics": false,
+            "enable_profiling": false,
+            "handle_cache_size": 32,
+            "mercury": {
+                "address": "ofi+verbs;ofi_rxm://10.41.14.108:41352",
+                "auto_sm": false,
+                "input_eager_size": 4060,
+                "listening": true,
+                "max_contexts": 1,
+                "na_no_block": false,
+                "na_no_retry": false,
+                "no_bulk_eager": false,
+                "no_loopback": false,
+                "output_eager_size": 4072,
+                "request_post_incr": 256,
+                "request_post_init": 256,
+                "stats": false,
+                "version": "2.1.0"
+            },
+            "output_dir": "/gpfs/alpine/csc332/scratch/robl/cachebench",
+            "profile_sparkline_timeslice_msec": 1000,
+            "progress_pool": 0,
+            "progress_timeout_ub_msec": 100,
+            "rpc_pool": 0,
+            "version": "0.9.10"
+        },
+        "providers": [
+            {
+                "config": {},
+                "dependencies": {},
+                "name": "cachercise",
+                "pool": "__primary__",
+                "provider_id": 1,
+                "type": "cachercise"
+            }
+        ],
+        "ssg": [
+            {
+                "bootstrap": "init",
+                "credential": -1,
+                "group_file": "cachercise.ssg",
+                "name": "cachegroup",
+                "pool": "",
+                "swim": {
+                    "disabled": false,
+                    "period_length_ms": 0,
+                    "subgroup_member_count": -1,
+                    "suspect_timeout_periods": -1
+                }
+            }
+        ]
+    }
+}
+ === client === 
+# SSG group refreshed; proceeding with benchmark.
+20 procs 4000 updates in 0.054981 0.054746 0.055129 seconds: 72752.052209 72557.045982 73064.523957 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":20,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:55933",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+40 procs 8000 updates in 0.110481 0.110163 0.110764 seconds: 72410.798961 72225.547456 72619.531749 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":40,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:42396",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+80 procs 16000 updates in 0.221181 0.220384 0.221722 seconds: 72339.026795 72162.583781 72600.567247 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":80,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:38278",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+160 procs 32000 updates in 0.446381 0.444719 0.447462 seconds: 71687.654679 71514.498493 71955.481018 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":160,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:60401",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+320 procs 64000 updates in 0.901258 0.896539 0.903438 seconds: 71011.877737 70840.502517 71385.600006 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":320,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:38562",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+640 procs 128000 updates in 1.819969 1.813715 1.824614 seconds: 70330.881619 70151.809052 70573.394773 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":640,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:38056",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+ === shutting down === 
+[2022-06-10 14:31:33.128] [info] Registering CACHERCISE provider with provider id 1
+[2022-06-10 14:31:33.128] [info] Adding backend implementation "dummy" to CACHERCISE provider
+[2022-06-10 14:31:33.128] [info] CACHERCISE provider registration done
+[2022-06-10 14:31:33.128] [info] Bedrock daemon now running at ofi+verbs;ofi_rxm://10.41.14.108:49936
+[2022-06-10 14:31:33.882] [info] Finalizing CACHERCISE provider
+[2022-06-10 14:31:33.883] [info] CACHERCISE provider successfuly finalized
+ === provider: 4 xstreams === 
+{
+    "ofi+verbs;ofi_rxm://10.41.14.108:49936": {
+        "abt_io": [],
+        "bedrock": {
+            "pool": "__primary__",
+            "provider_id": 0
+        },
+        "clients": [],
+        "libraries": {
+            "cachercise": "libcachercise-bedrock-module.so"
+        },
+        "margo": {
+            "argobots": {
+                "abt_mem_max_num_stacks": 8,
+                "abt_thread_stacksize": 2097152,
+                "pools": [
+                    {
+                        "access": "mpmc",
+                        "kind": "fifo_wait",
+                        "name": "__primary__"
+                    }
+                ],
+                "version": "1.1",
+                "xstreams": [
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_0__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_1__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_2__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_3__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__primary__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    }
+                ]
+            },
+            "enable_diagnostics": false,
+            "enable_profiling": false,
+            "handle_cache_size": 32,
+            "mercury": {
+                "address": "ofi+verbs;ofi_rxm://10.41.14.108:49936",
+                "auto_sm": false,
+                "input_eager_size": 4060,
+                "listening": true,
+                "max_contexts": 1,
+                "na_no_block": false,
+                "na_no_retry": false,
+                "no_bulk_eager": false,
+                "no_loopback": false,
+                "output_eager_size": 4072,
+                "request_post_incr": 256,
+                "request_post_init": 256,
+                "stats": false,
+                "version": "2.1.0"
+            },
+            "output_dir": "/gpfs/alpine/csc332/scratch/robl/cachebench",
+            "profile_sparkline_timeslice_msec": 1000,
+            "progress_pool": 0,
+            "progress_timeout_ub_msec": 100,
+            "rpc_pool": 0,
+            "version": "0.9.10"
+        },
+        "providers": [
+            {
+                "config": {},
+                "dependencies": {},
+                "name": "cachercise",
+                "pool": "__primary__",
+                "provider_id": 1,
+                "type": "cachercise"
+            }
+        ],
+        "ssg": [
+            {
+                "bootstrap": "init",
+                "credential": -1,
+                "group_file": "cachercise.ssg",
+                "name": "cachegroup",
+                "pool": "",
+                "swim": {
+                    "disabled": false,
+                    "period_length_ms": 0,
+                    "subgroup_member_count": -1,
+                    "suspect_timeout_periods": -1
+                }
+            }
+        ]
+    }
+}
+ === client === 
+# SSG group refreshed; proceeding with benchmark.
+20 procs 4000 updates in 0.114267 0.113994 0.114544 seconds: 35005.679573 34921.079278 35089.579969 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":20,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:36375",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+40 procs 8000 updates in 0.225666 0.225086 0.226227 seconds: 35450.569313 35362.751860 35541.947571 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":40,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:52384",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+80 procs 16000 updates in 0.449719 0.448531 0.450846 seconds: 35577.757499 35488.875822 35672.036805 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":80,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:44530",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+160 procs 32000 updates in 0.901777 0.899213 0.904112 seconds: 35485.488298 35393.827394 35586.691261 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":160,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:59657",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+320 procs 64000 updates in 1.707591 1.656668 1.729258 seconds: 37479.711323 37010.094309 38631.766205 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":320,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:60912",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+640 procs 128000 updates in 3.614009 3.601509 3.623087 seconds: 35417.729968 35328.987218 35540.662448 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":640,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:35287",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+ === shutting down === 
+[2022-06-10 14:32:50.328] [info] Finalizing CACHERCISE provider
+[2022-06-10 14:32:50.328] [info] CACHERCISE provider successfuly finalized
+[2022-06-10 14:32:51.454] [info] Registering CACHERCISE provider with provider id 1
+[2022-06-10 14:32:51.455] [info] Adding backend implementation "dummy" to CACHERCISE provider
+[2022-06-10 14:32:51.455] [info] CACHERCISE provider registration done
+[2022-06-10 14:32:51.455] [info] Bedrock daemon now running at ofi+verbs;ofi_rxm://10.41.14.108:36013
+ === provider: 10 xstreams === 
+{
+    "ofi+verbs;ofi_rxm://10.41.14.108:36013": {
+        "abt_io": [],
+        "bedrock": {
+            "pool": "__primary__",
+            "provider_id": 0
+        },
+        "clients": [],
+        "libraries": {
+            "cachercise": "libcachercise-bedrock-module.so"
+        },
+        "margo": {
+            "argobots": {
+                "abt_mem_max_num_stacks": 8,
+                "abt_thread_stacksize": 2097152,
+                "pools": [
+                    {
+                        "access": "mpmc",
+                        "kind": "fifo_wait",
+                        "name": "__primary__"
+                    }
+                ],
+                "version": "1.1",
+                "xstreams": [
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_0__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_1__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_2__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_3__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_4__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_5__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_6__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_7__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_8__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_9__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__primary__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    }
+                ]
+            },
+            "enable_diagnostics": false,
+            "enable_profiling": false,
+            "handle_cache_size": 32,
+            "mercury": {
+                "address": "ofi+verbs;ofi_rxm://10.41.14.108:36013",
+                "auto_sm": false,
+                "input_eager_size": 4060,
+                "listening": true,
+                "max_contexts": 1,
+                "na_no_block": false,
+                "na_no_retry": false,
+                "no_bulk_eager": false,
+                "no_loopback": false,
+                "output_eager_size": 4072,
+                "request_post_incr": 256,
+                "request_post_init": 256,
+                "stats": false,
+                "version": "2.1.0"
+            },
+            "output_dir": "/gpfs/alpine/csc332/scratch/robl/cachebench",
+            "profile_sparkline_timeslice_msec": 1000,
+            "progress_pool": 0,
+            "progress_timeout_ub_msec": 100,
+            "rpc_pool": 0,
+            "version": "0.9.10"
+        },
+        "providers": [
+            {
+                "config": {},
+                "dependencies": {},
+                "name": "cachercise",
+                "pool": "__primary__",
+                "provider_id": 1,
+                "type": "cachercise"
+            }
+        ],
+        "ssg": [
+            {
+                "bootstrap": "init",
+                "credential": -1,
+                "group_file": "cachercise.ssg",
+                "name": "cachegroup",
+                "pool": "",
+                "swim": {
+                    "disabled": false,
+                    "period_length_ms": 0,
+                    "subgroup_member_count": -1,
+                    "suspect_timeout_periods": -1
+                }
+            }
+        ]
+    }
+}
+ === client === 
+# SSG group refreshed; proceeding with benchmark.
+20 procs 4000 updates in 0.110461 0.110199 0.110717 seconds: 36212.002553 36128.173620 36297.960154 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":20,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:42728",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+40 procs 8000 updates in 0.218919 0.218321 0.219488 seconds: 36543.151794 36448.542747 36643.218961 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":40,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:57128",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+80 procs 16000 updates in 0.434287 0.433094 0.435375 seconds: 36842.006229 36749.920879 36943.443133 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":80,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:60855",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+160 procs 32000 updates in 0.862631 0.860021 0.864780 seconds: 37095.825732 37003.610228 37208.373760 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":160,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:56237",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+320 procs 64000 updates in 1.697022 1.652124 1.711675 seconds: 37713.115129 37390.275345 38738.004054 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":320,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:46128",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+640 procs 128000 updates in 3.466705 3.454967 3.475322 seconds: 36922.665253 36831.114415 37048.108944 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":640,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:50695",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+ === shutting down === 
+[2022-06-10 14:34:10.245] [info] Registering CACHERCISE provider with provider id 1
+[2022-06-10 14:34:10.246] [info] Adding backend implementation "dummy" to CACHERCISE provider
+[2022-06-10 14:34:10.246] [info] CACHERCISE provider registration done
+[2022-06-10 14:34:10.246] [info] Bedrock daemon now running at ofi+verbs;ofi_rxm://10.41.14.108:47263
+[2022-06-10 14:34:10.834] [info] Finalizing CACHERCISE provider
+[2022-06-10 14:34:10.834] [info] CACHERCISE provider successfuly finalized
+ === provider: 42 xstreams === 
+{
+    "ofi+verbs;ofi_rxm://10.41.14.108:47263": {
+        "abt_io": [],
+        "bedrock": {
+            "pool": "__primary__",
+            "provider_id": 0
+        },
+        "clients": [],
+        "libraries": {
+            "cachercise": "libcachercise-bedrock-module.so"
+        },
+        "margo": {
+            "argobots": {
+                "abt_mem_max_num_stacks": 8,
+                "abt_thread_stacksize": 2097152,
+                "pools": [
+                    {
+                        "access": "mpmc",
+                        "kind": "fifo_wait",
+                        "name": "__primary__"
+                    }
+                ],
+                "version": "1.1",
+                "xstreams": [
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_0__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_1__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_2__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_3__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_4__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_5__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_6__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_7__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_8__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_9__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_10__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_11__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_12__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_13__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_14__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_15__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_16__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_17__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_18__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_19__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_20__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_21__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_22__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_23__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_24__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_25__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_26__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_27__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_28__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_29__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_30__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_31__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_32__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_33__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_34__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_35__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_36__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_37__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_38__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_39__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_40__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__rpc_41__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    },
+                    {
+                        "affinity": [],
+                        "cpubind": -1,
+                        "name": "__primary__",
+                        "scheduler": {
+                            "pools": [
+                                0
+                            ],
+                            "type": "basic_wait"
+                        }
+                    }
+                ]
+            },
+            "enable_diagnostics": false,
+            "enable_profiling": false,
+            "handle_cache_size": 32,
+            "mercury": {
+                "address": "ofi+verbs;ofi_rxm://10.41.14.108:47263",
+                "auto_sm": false,
+                "input_eager_size": 4060,
+                "listening": true,
+                "max_contexts": 1,
+                "na_no_block": false,
+                "na_no_retry": false,
+                "no_bulk_eager": false,
+                "no_loopback": false,
+                "output_eager_size": 4072,
+                "request_post_incr": 256,
+                "request_post_init": 256,
+                "stats": false,
+                "version": "2.1.0"
+            },
+            "output_dir": "/gpfs/alpine/csc332/scratch/robl/cachebench",
+            "profile_sparkline_timeslice_msec": 1000,
+            "progress_pool": 0,
+            "progress_timeout_ub_msec": 100,
+            "rpc_pool": 0,
+            "version": "0.9.10"
+        },
+        "providers": [
+            {
+                "config": {},
+                "dependencies": {},
+                "name": "cachercise",
+                "pool": "__primary__",
+                "provider_id": 1,
+                "type": "cachercise"
+            }
+        ],
+        "ssg": [
+            {
+                "bootstrap": "init",
+                "credential": -1,
+                "group_file": "cachercise.ssg",
+                "name": "cachegroup",
+                "pool": "",
+                "swim": {
+                    "disabled": false,
+                    "period_length_ms": 0,
+                    "subgroup_member_count": -1,
+                    "suspect_timeout_periods": -1
+                }
+            }
+        ]
+    }
+}
+ === client === 
+# SSG group refreshed; proceeding with benchmark.
+20 procs 4000 updates in 0.111876 0.111524 0.112127 seconds: 35754.017430 35673.710054 35866.808999 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":20,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:51390",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+40 procs 8000 updates in 0.214510 0.214001 0.215007 seconds: 37294.292784 37208.151469 37383.075553 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":40,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:36181",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+80 procs 16000 updates in 0.428227 0.427123 0.429272 seconds: 37363.399857 37272.404506 37459.916309 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":80,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:44307",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+160 procs 32000 updates in 0.849976 0.847390 0.852176 seconds: 37648.108747 37550.947218 37762.992499 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":160,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:51078",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+320 procs 64000 updates in 1.644736 1.594174 1.662630 seconds: 38912.015805 38493.238059 40146.175537 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":320,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:40899",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+# SSG group refreshed; proceeding with benchmark.
+640 procs 128000 updates in 3.432257 3.420841 3.440857 seconds: 37293.249117 37200.030045 37417.694705 updates/sec
+"quintain-benchmark" : {
+  "items_per_process":200,
+  "nranks":640,
+  "margo":{
+    "version":"0.9.10",
+    "progress_timeout_ub_msec":100,
+    "enable_profiling":false,
+    "enable_diagnostics":false,
+    "output_dir":"/gpfs/alpine/csc332/scratch/robl/cachebench",
+    "handle_cache_size":32,
+    "profile_sparkline_timeslice_msec":1000,
+    "mercury":{
+      "version":"2.1.0",
+      "request_post_incr":256,
+      "request_post_init":256,
+      "auto_sm":false,
+      "no_bulk_eager":false,
+      "no_loopback":false,
+      "stats":false,
+      "na_no_block":false,
+      "na_no_retry":false,
+      "max_contexts":1,
+      "address":"ofi+verbs;ofi_rxm://10.41.14.109:36180",
+      "listening":false,
+      "input_eager_size":4060,
+      "output_eager_size":4072
+    },
+    "argobots":{
+      "abt_mem_max_num_stacks":8,
+      "abt_thread_stacksize":2097152,
+      "version":"1.1",
+      "pools":[
+        {
+          "name":"__primary__",
+          "kind":"fifo_wait",
+          "access":"mpmc"
+        }
+      ],
+      "xstreams":[
+        {
+          "name":"__primary__",
+          "cpubind":-1,
+          "affinity":[
+          ],
+          "scheduler":{
+            "type":"basic_wait",
+            "pools":[
+              0
+            ]
+          }
+        }
+      ]
+    },
+    "progress_pool":0,
+    "rpc_pool":0
+  }
+}
+ === shutting down === 
+[2022-06-10 14:35:28.495] [info] Finalizing CACHERCISE provider
+[2022-06-10 14:35:28.495] [info] CACHERCISE provider successfuly finalized
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@batch3>
+Subject: Job 2134765: <cachebench> in cluster <summit> Done
+
+Job <cachebench> was submitted from host <login1> by user <robl> in cluster <summit> at Thu Jun  9 17:22:51 2022
+Job was executed on host(s) <1*batch3>, in queue <batch>, as user <robl> in cluster <summit> at Fri Jun 10 14:29:41 2022
+                            <42*f18n04>
+                            <42*f18n05>
+                            <42*f18n06>
+                            <42*f19n13>
+                            <42*f19n14>
+                            <42*f19n15>
+                            <42*f19n16>
+                            <42*f32n10>
+                            <42*f35n06>
+                            <42*g03n13>
+                            <42*g03n14>
+                            <42*g03n15>
+                            <42*g03n16>
+                            <42*g03n17>
+                            <42*g03n18>
+                            <42*g04n01>
+                            <42*g04n02>
+                            <42*g04n03>
+                            <42*g04n04>
+                            <42*g04n05>
+                            <42*g04n06>
+                            <42*g04n07>
+                            <42*g04n08>
+                            <42*g04n09>
+                            <42*g04n10>
+                            <42*g04n11>
+                            <42*g04n12>
+                            <42*g04n13>
+                            <42*g04n14>
+                            <42*g04n15>
+                            <42*g04n16>
+                            <42*g04n17>
+                            <42*g04n18>
+</ccs/home/robl> was used as the home directory.
+</ccs/home/robl/src/cachercise/examples> was used as the working directory.
+Started at Fri Jun 10 14:29:41 2022
+Terminated at Fri Jun 10 14:35:39 2022
+Results reported at Fri Jun 10 14:35:39 2022
+
+The output (if any) is above this job summary.
+
